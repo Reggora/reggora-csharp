@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -54,6 +54,7 @@ namespace Reggora.Api.Test
                     if (File.Exists(configFilePath))
                     {
                         fileContents = File.ReadAllText(configFilePath);
+                        Console.WriteLine($"Using config at {configFilePath}");
                     }
                     else
                     {
@@ -62,6 +63,7 @@ namespace Reggora.Api.Test
                         if (File.Exists(configFilePath))
                         {
                             fileContents = File.ReadAllText(configFilePath);
+                            Console.WriteLine($"Using config at {configFilePath}");
                         }
                     }
                 }

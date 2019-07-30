@@ -10,4 +10,18 @@
       <ProjectReference Include="..\Reggora.Api\Reggora.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="example.conf" />
+        <None Remove="example.jack.conf" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="example.conf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="example.jack.conf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>
