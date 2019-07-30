@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using Reggora.Api.Exceptions;
+using Reggora.Api.Requests.Lender.Models;
 
 namespace Reggora.Api.Test
 {
@@ -11,10 +12,17 @@ namespace Reggora.Api.Test
     {
         static void Main(string[] args)
         {
+            Lender();
+            Vendor();
+        }
+
+        public static void Lender()
+        {
+            Lender lender = new Lender(Config.GetProperty("lender.token", ""));
             try
             {
-                var lender = Reggora.Lender(Config.GetProperty("lender.email", ""),
-                    Config.GetProperty("lender.password", ""), Config.GetProperty("lender.token", ""));
+                lender.Authenticate(Config.GetProperty("lender.email", ""),
+                    Config.GetProperty("lender.password", ""));
             }
             catch (ReggoraException e)
             {
@@ -24,7 +32,39 @@ namespace Reggora.Api.Test
 
             try
             {
-                var vendor = Reggora.Vendor(Config.GetProperty("vendor.email", ""),
+                var loanId = lender.CreateLoan(new Loan
+                {
+                    LoanNumber = "5b3bbfdb4348380ddc56cd12",
+                    AppraisalType = "refinance",
+                    DueDate = "2019-09-27 10:10:46",
+                    SubjectPropertyAddress = "695 Atlantic St",
+                    SubjectPropertyCity = "Boston",
+                    SubjectPropertyState = "MA",
+                    SubjectPropertyZip = 02134
+                });
+
+                Loan loan = lender.Loan(loanId);
+
+                loan.LoanType = "FHA";
+                var updateLoan = lender.UpdateLoan(loan);
+
+                var deleteLoan = lender.DeleteLoan(loan);
+            }
+            catch (ReggoraException e)
+            {
+                Console.WriteLine("Unable to manage loans: " + e.Message);
+                return;
+            }
+
+            return;
+        }
+
+        public static void Vendor()
+        {
+            Vendor vendor;
+            try
+            {
+                vendor = Reggora.Vendor(Config.GetProperty("vendor.email", ""),
                     Config.GetProperty("vendor.password", ""), Config.GetProperty("vendor.token", ""));
             }
             catch (ReggoraException e)
