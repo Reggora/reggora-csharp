@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
+using Reggora.Api.Exceptions;
 
 namespace Reggora.Api.Test
 {
@@ -10,11 +11,27 @@ namespace Reggora.Api.Test
     {
         static void Main(string[] args)
         {
-            var lender = Reggora.Lender(Config.GetProperty("lender.email", ""),
-                Config.GetProperty("lender.password", ""), Config.GetProperty("lender.token", ""));
-            
-//            var vendor = Reggora.Vendor(Config.GetProperty("vendor.email", ""),
-//                Config.GetProperty("vendor.password", ""), Config.GetProperty("vendor.token", ""));
+            try
+            {
+                var lender = Reggora.Lender(Config.GetProperty("lender.email", ""),
+                    Config.GetProperty("lender.password", ""), Config.GetProperty("lender.token", ""));
+            }
+            catch (ReggoraException e)
+            {
+                Console.WriteLine("Unable to authenticate to lender API: " + e.Message);
+                return;
+            }
+
+            try
+            {
+                var vendor = Reggora.Vendor(Config.GetProperty("vendor.email", ""),
+                    Config.GetProperty("vendor.password", ""), Config.GetProperty("vendor.token", ""));
+            }
+            catch (ReggoraException e)
+            {
+                Console.WriteLine("Unable to authenticate to vendor API: " + e.Message);
+                return;
+            }
         }
     }
 
