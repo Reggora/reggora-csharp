@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Net;
 using Newtonsoft.Json;
 using Reggora.Api.Authentication;
 using Reggora.Api.Requests.Common;
@@ -21,7 +20,6 @@ namespace Reggora.Api
         {
             _integrationToken = integrationToken;
             _client = new RestClient(Reggora.BaseUrl);
-            _client.Proxy = new WebProxy("127.0.0.1", 8888);
         }
 
         public Lender Authenticate(string username, string password)
