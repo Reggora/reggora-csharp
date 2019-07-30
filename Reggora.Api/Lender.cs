@@ -34,8 +34,7 @@ namespace Reggora.Api
 
             if (response.ErrorException != null)
             {
-                throw new ApplicationException("Error retrieving response.  Check inner details for more info.",
-                    response.ErrorException);
+                throw Reggora.RaiseRequestErrorToException(response.StatusCode, response.ErrorException);
             }
 
             return response.Data;
