@@ -1,4 +1,4 @@
-namespace Reggora.Api.Models
+namespace Reggora.Api.Requests.Common.Models
 {
     public class AuthorizationResponse
     {

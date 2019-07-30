@@ -1,7 +1,7 @@
 using System;
 using RestSharp;
 
-namespace Reggora.Api.Requests
+namespace Reggora.Api.Requests.Common
 {
     public abstract class AuthenticateRequest : RestRequest
     {

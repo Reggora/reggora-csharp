@@ -1,4 +1,5 @@
-using Reggora.Api.Models.Lender;
+using Reggora.Api.Requests.Common;
+using Reggora.Api.Requests.Lender.Models;
 
 namespace Reggora.Api.Requests.Lender
 {

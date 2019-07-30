@@ -1,4 +1,4 @@
-namespace Reggora.Api.Models.Vendor
+namespace Reggora.Api.Requests.Vendor.Models
 {
     public class AuthorizationRequest
     {

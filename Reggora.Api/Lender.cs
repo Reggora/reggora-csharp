@@ -1,8 +1,7 @@
-using System;
 using Reggora.Api.Authentication;
-using Reggora.Api.Models;
-using Reggora.Api.Models.Lender;
+using Reggora.Api.Requests.Common.Models;
 using Reggora.Api.Requests.Lender;
+using Reggora.Api.Requests.Lender.Models;
 using RestSharp;
 
 namespace Reggora.Api

@@ -1,4 +1,5 @@
-using Reggora.Api.Models.Vendor;
+using Reggora.Api.Requests.Common;
+using Reggora.Api.Requests.Vendor.Models;
 
 namespace Reggora.Api.Requests.Vendor
 {
