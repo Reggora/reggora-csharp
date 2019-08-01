@@ -27,11 +27,11 @@ namespace Reggora.Api.Entity.Lender
         public Loan FromGetRequest(GetLoanRequest.Response.Loan response)
         {
             Id.Value = response.Id;
-            Number.Value = Int32.Parse(response.LoanNumber);
+            Number.Value = EntityField.IntFromString(response.LoanNumber);
             Type.Value = response.LoanType;
             Due.Value = DateTime.Parse(response.DueDate);
-            Created.Value = DateTime.Parse(response.Created);
-            Updated.Value = DateTime.Parse(response.Updated);
+            Created.Value = EntityField.DateTimeFromString(response.Created ?? "");
+            Updated.Value = EntityField.DateTimeFromString(response.Updated ?? "");
             Property.Value = new Property(this);
             Property.Value.Address.Value = response.SubjectPropertyAddress;
             Property.Value.City.Value = response.SubjectPropertyCity;

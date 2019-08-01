@@ -45,9 +45,9 @@ namespace Reggora.Api.Entity.Lender
             Id.Value = response.Id;
             Status.Value = response.Status;
             Priority.Value = PriorityFromString(response.Priority);
-            Due.Value = DateTime.Parse(response.DueDate);
-            InspectedAt.Value = DateTime.Parse(response.InspectedDate);
-            Created.Value = DateTime.Parse(response.Created);
+            Due.Value = EntityField.DateTimeFromString(response.DueDate ?? "");
+            InspectedAt.Value = EntityField.DateTimeFromString(response.InspectedDate ?? "");
+            Created.Value = EntityField.DateTimeFromString(response.Created ?? "");
             Allocation.Value = AllocationFromString(response.Allocation);
             Inspected.Value = response.InspectionComplete;
             Loan.Entity.FromGetRequest(response.LoanFile);
@@ -55,7 +55,7 @@ namespace Reggora.Api.Entity.Lender
             return this;
         }
         
-        public static string AllocationToString(AllocationMode allocation)
+        public static string AllocationToString(AllocationMode? allocation)
         {
             switch (allocation)
             {
@@ -81,7 +81,7 @@ namespace Reggora.Api.Entity.Lender
             throw new InvalidCastException($"Cannot cast string '{allocation}' to '{typeof(AllocationMode)}'!");
         }
 
-        public static string PriorityToString(PriorityType priority)
+        public static string PriorityToString(PriorityType? priority)
         {
             switch (priority)
             {
