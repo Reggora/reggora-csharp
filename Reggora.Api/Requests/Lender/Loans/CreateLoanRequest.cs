@@ -1,25 +1,24 @@
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
+using Reggora.Api.Entity.Lender;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Loans
 {
-    public class CreateLoanRequest : RestRequest
+    public class CreateLoanRequest : ReggoraRequest
     {
         public CreateLoanRequest(Loan loan) : base("lender/loan/create", Method.POST)
         {
             AddJsonBody(new Request
             {
-                LoanNumber = loan.LoanNumber,
-                AppraisalType = loan.AppraisalType,
-                DueDate = loan.DueDate,
-                RelatedOrder = loan.RelatedOrder,
-                SubjectPropertyAddress = loan.SubjectPropertyAddress,
-                SubjectPropertyCity = loan.SubjectPropertyCity,
-                SubjectPropertyState = loan.SubjectPropertyState,
-                SubjectPropertyZip = loan.SubjectPropertyZip,
-                CaseNumber = loan.CaseNumber,
-                LoanType = loan.LoanType
+                LoanNumber = loan.Number.Value.ToString(),
+                AppraisalType = loan.Type.Value,
+                DueDate = loan.Due.ToDate(),
+                SubjectPropertyAddress = loan.Property.Value.Address.Value,
+                SubjectPropertyCity = loan.Property.Value.City.Value,
+                SubjectPropertyState = loan.Property.Value.State.Value,
+                SubjectPropertyZip = loan.Property.Value.Zip.Value,
+                CaseNumber = loan.Number.ToString(),
+                LoanType = loan.Type.Value
             });
         }
 
@@ -40,20 +39,11 @@ namespace Reggora.Api.Requests.Lender.Loans
             [JsonProperty("subject_property_state")]
             public string SubjectPropertyState { get; set; }
             [JsonProperty("subject_property_zip")]
-            public int? SubjectPropertyZip { get; set; }
+            public string SubjectPropertyZip { get; set; }
             [JsonProperty("case_number")]
             public string CaseNumber { get; set; }
             [JsonProperty("type")]
             public string LoanType { get; set; }
-        }
-
-        public class Response
-        {
-            [JsonProperty("data")]
-            public string Data { get; set; }
-
-            [JsonProperty("status")]
-            public int Status { get; set; }
         }
     }
 }

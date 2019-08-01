@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
 using RestSharp;
+using Loan = Reggora.Api.Requests.Lender.Loans.GetLoanRequest.Response.Loan;
 
 namespace Reggora.Api.Requests.Lender.Loans
 {
-    public class GetLoansRequest : RestRequest
+    public class GetLoansRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -27,6 +27,11 @@ namespace Reggora.Api.Requests.Lender.Loans
             {
                 AddParameter("loan_officer", LoanOfficer, ParameterType.QueryString);
             }
+        }
+        
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
         }
 
         private string OrderingToString()

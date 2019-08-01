@@ -30,29 +30,55 @@ namespace Reggora.Api.Test
                 return;
             }
 
+//            try
+//            {
+//                var loanId = lender.CreateLoan(new Loan
+//                {
+//                    LoanNumber = "5b3bbfdb4348380ddc56cd12",
+//                    AppraisalType = "refinance",
+//                    DueDate = "2019-09-27 10:10:46",
+//                    SubjectPropertyAddress = "695 Atlantic St",
+//                    SubjectPropertyCity = "Boston",
+//                    SubjectPropertyState = "MA",
+//                    SubjectPropertyZip = 02134
+//                });
+//
+//                Loan loan = lender.Loan(loanId);
+//
+//                loan.LoanType = "FHA";
+//                var updateLoan = lender.UpdateLoan(loan);
+//
+//                var deleteLoan = lender.DeleteLoan(loan);
+//            }
+//            catch (ReggoraException e)
+//            {
+//                Console.WriteLine("Unable to manage loans: " + e.Message);
+//                return;
+//            }
+            
             try
             {
-                var loanId = lender.CreateLoan(new Loan
+                var productId = lender.CreateProduct(new Product
                 {
-                    LoanNumber = "5b3bbfdb4348380ddc56cd12",
-                    AppraisalType = "refinance",
-                    DueDate = "2019-09-27 10:10:46",
-                    SubjectPropertyAddress = "695 Atlantic St",
-                    SubjectPropertyCity = "Boston",
-                    SubjectPropertyState = "MA",
-                    SubjectPropertyZip = 02134
+                    ProductName = "test product",
+                    Amount = (float) 10.0,
+                    InspectionType = Product.Inspection.Exterior,
+                    RequestForms = new List<string> { "Form#1", "Form#2" }
+                    
                 });
+                
+                Console.WriteLine(productId);
 
-                Loan loan = lender.Loan(loanId);
-
-                loan.LoanType = "FHA";
-                var updateLoan = lender.UpdateLoan(loan);
-
-                var deleteLoan = lender.DeleteLoan(loan);
+//                Loan loan = lender.Loan(loanId);
+//
+//                loan.LoanType = "FHA";
+//                var updateLoan = lender.UpdateLoan(loan);
+//
+//                var deleteLoan = lender.DeleteLoan(loan);
             }
             catch (ReggoraException e)
             {
-                Console.WriteLine("Unable to manage loans: " + e.Message);
+                Console.WriteLine("Unable to manage products: " + e.Message);
                 return;
             }
 
