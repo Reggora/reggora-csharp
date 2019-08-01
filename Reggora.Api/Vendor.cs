@@ -1,47 +1,21 @@
-using Newtonsoft.Json;
 using Reggora.Api.Authentication;
-using Reggora.Api.Requests.Common;
 using Reggora.Api.Requests.Vendor;
-using Reggora.Api.Requests.Vendor.Models;
-using RestSharp;
-using RestSharp.Serializers.Newtonsoft.Json;
-using RestRequest = RestSharp.RestRequest;
 
 namespace Reggora.Api
 {
-    public class Vendor
+    public class Vendor : ApiClient<Vendor>
     {
-        private readonly string _integrationToken;
-        private readonly IRestClient _client;
-
-        public Vendor(string integrationToken)
+        public Vendor(string integrationToken) : base(integrationToken)
         {
-            _integrationToken = integrationToken;
-            _client = new RestClient(Reggora.BaseUrl);
         }
-
-        public Vendor Authenticate(string email, string password)
+        
+        public override Vendor Authenticate(string email, string password)
         {
-            var response = Execute<AuthenticateRequest.Response>(new VendorAuthenticateRequest(new AuthorizationRequest
-                {Email = email, Password = password}));
+            var response = new VendorAuthenticateRequest(email, password).Execute(Client);
 
-            _client.Authenticator = new ReggoraJwtAuthenticator(_integrationToken, response.Token);
+            Client.Authenticator = new ReggoraJwtAuthenticator(IntegrationToken, response.Token);
 
             return this;
-        }
-
-        public T Execute<T>(RestRequest request) where T : new()
-        {
-            request.JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializer{NullValueHandling = NullValueHandling.Ignore});
-            
-            var response = _client.Execute<T>(request);
-
-            if (response.ErrorException != null)
-            {
-                throw Reggora.RaiseRequestErrorToException(response.StatusCode, response.ErrorException);
-            }
-
-            return response.Data;
         }
     }
 }

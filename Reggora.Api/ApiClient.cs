@@ -8,12 +8,12 @@ namespace Reggora.Api
 {
     public abstract class ApiClient<T>
     {
-        protected readonly string _integrationToken;
+        protected readonly string IntegrationToken;
         public readonly IRestClient Client;
         
         public ApiClient(string integrationToken)
         {
-            _integrationToken = integrationToken;
+            IntegrationToken = integrationToken;
             Client = new RestClient(Reggora.BaseUrl);
             Client.Proxy = new WebProxy("127.0.0.1", 8888);
         }
