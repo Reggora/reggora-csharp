@@ -16,6 +16,7 @@ namespace Reggora.Api.Storage
 
         public Storage(ApiClient<C> api)
         {
+            Known = new EventEmittingDictionary<string, T>(() => Dirty = true);
             UseClient(api);
         }
 
