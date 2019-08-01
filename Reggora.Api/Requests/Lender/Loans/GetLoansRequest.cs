@@ -19,13 +19,13 @@ namespace Reggora.Api.Requests.Lender.Loans
 
         public GetLoansRequest() : base("lender/loans", Method.GET)
         {
-            AddParameter("offset", Offset, ParameterType.RequestBody);
-            AddParameter("limit", Limit, ParameterType.RequestBody);
-            AddParameter("order", OrderingToString(), ParameterType.RequestBody);
+            AddParameter("offset", Offset, ParameterType.QueryString);
+            AddParameter("limit", Limit, ParameterType.QueryString);
+            AddParameter("order", OrderingToString(), ParameterType.QueryString);
 
             if (LoanOfficer != null)
             {
-                AddParameter("loan_officer", LoanOfficer, ParameterType.RequestBody);
+                AddParameter("loan_officer", LoanOfficer, ParameterType.QueryString);
             }
         }
 
