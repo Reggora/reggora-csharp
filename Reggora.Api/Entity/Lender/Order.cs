@@ -17,14 +17,14 @@ namespace Reggora.Api.Entity.Lender
             Rush
         }
 
-        public readonly EntityField<int> Number;
+        public readonly EntityField<int?> Number;
         public readonly EntityField<string> Status;
-        public readonly EntityField<PriorityType> Priority;
-        public readonly EntityField<DateTime> Due;
-        public readonly EntityField<DateTime> InspectedAt;
-        public readonly EntityField<DateTime> Created;
-        public readonly EntityField<AllocationMode> Allocation;
-        public readonly EntityField<bool> Inspected;
+        public readonly EntityField<PriorityType?> Priority;
+        public readonly EntityField<DateTime?> Due;
+        public readonly EntityField<DateTime?> InspectedAt;
+        public readonly EntityField<DateTime?> Created;
+        public readonly EntityField<AllocationMode?> Allocation;
+        public readonly EntityField<bool?> Inspected;
         public readonly EntityRelationship<Loan> Loan;
 
         public Order()

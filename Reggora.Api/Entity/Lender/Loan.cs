@@ -5,11 +5,11 @@ namespace Reggora.Api.Entity.Lender
 {
     public class Loan : Entity
     {
-        public readonly EntityField<int> Number;
+        public readonly EntityField<int?> Number;
         public readonly EntityField<string> Type;
-        public readonly EntityField<DateTime> Due;
-        public readonly EntityField<DateTime> Created;
-        public readonly EntityField<DateTime> Updated;
+        public readonly EntityField<DateTime?> Due;
+        public readonly EntityField<DateTime?> Created;
+        public readonly EntityField<DateTime?> Updated;
         public readonly EntityField<Property> Property;
         public readonly EntityField<string> CaseNumber;
 
