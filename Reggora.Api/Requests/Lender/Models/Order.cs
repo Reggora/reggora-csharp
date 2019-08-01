@@ -4,16 +4,54 @@ namespace Reggora.Api.Requests.Lender.Models
     {
         public string Id;
         public int Status;
-        public int Priority;
-        public int DueDate;
+        public Priority PriorityType;
+        public string DueDate;
         public int InspectionDate;
         public AcceptedVendor AcceptedVendor;
         public string Created;
-        public string AllocationMode;
+        public Allocation AllocationMode;
         public string[] RequestedVendors = {};
         public bool InspectionComplete;
         public Product[] Products = {};
         public LoanFile LoanFile;
+        
+        public enum Allocation
+        {
+            Automatic,
+            Manual
+        }
+        
+        public enum Priority
+        {
+            Normal,
+            Rush
+        }
+        
+        public static string AllocationToString(Allocation allocation)
+        {
+            switch (allocation)
+            {
+                case Allocation.Automatic:
+                    return "automatically";
+                case Allocation.Manual:
+                    return "manually";
+            }
+
+            return "";
+        }
+
+        public static string PriorityToString(Priority priority)
+        {
+            switch (priority)
+            {
+                case Priority.Normal:
+                    return "normal";
+                case Priority.Rush:
+                    return "rush";
+            }
+
+            return "";
+        }
     }
 
     public class AcceptedVendor

@@ -7,7 +7,7 @@ namespace Reggora.Api.Requests.Lender.Models
         public string PhoneNumber = "";
         public string FirstName;
         public string LastName;
-        public int? NmlsId = null;
+        public string NmlsId;
         public string Created = "";
         public string Role = "";
         public User[] MatchedUsers = {};
