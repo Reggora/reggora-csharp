@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
-    public class GetSubmissionsRequest : RestRequest
+    public class GetSubmissionsRequest : ReggoraRequest
     {
         public GetSubmissionsRequest(string orderId) : base("lender/get-submissions/{order_id}", Method.GET)
         {

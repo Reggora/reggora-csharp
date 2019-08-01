@@ -1,23 +1,23 @@
 using Reggora.Api.Entity.Lender;
-using Reggora.Api.Requests.Lender.Loans;
+using Reggora.Api.Requests.Lender.Orders;
 
 namespace Reggora.Api.Storage.Lender
 {
-    public class LoanStorage : Storage<Loan, Api.Lender>
+    public class OrderStorage : Storage<Order, Api.Lender>
     {
-        public LoanStorage(Api.Lender api) : base(api)
+        public OrderStorage(Api.Lender api) : base(api)
         {
         }
         
-        public override Loan Get(string id)
+        public override Order Get(string id)
         {
             Known.TryGetValue(id, out var returned);
 
             if (returned == null)
             {
                 // TODO: Verify response
-                var result = new GetLoanRequest(id).Execute(Api.Client).Data;
-                returned = new Loan().FromGetRequest(result);
+                var result = new GetOrderRequest(id).Execute(Api.Client).Data;
+                returned = new Order().FromGetRequest(result);
                 Known.Add(returned.Id.Value, returned);
             }
 

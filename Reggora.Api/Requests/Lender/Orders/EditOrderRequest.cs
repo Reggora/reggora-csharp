@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
+using Reggora.Api.Entity.Lender;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
-    public class EditOrderRequest : RestRequest
+    public class EditOrderRequest : ReggoraRequest
     {
         public EditOrderRequest(Order order, bool refresh) : base("lender/order/{order_id}", Method.PUT)
         {
@@ -15,11 +13,11 @@ namespace Reggora.Api.Requests.Lender.Orders
 
             AddJsonBody(new Request
             {
-                Allocation = Order.AllocationToString(order.AllocationMode),
-                Loan = order.LoanFile.Id,
-                Priority = Order.PriorityToString(order.PriorityType),
-                Products = Array.ConvertAll(order.Products, input => input.Id).ToList(),
-                DueDate = order.DueDate,
+                Allocation = Order.AllocationToString(order.Allocation.Value),
+                Loan = order.Loan.Entity.Id.Value,
+                Priority = Order.PriorityToString(order.Priority.Value),
+//                Products = Array.ConvertAll(order.Products, input => input.Id).ToList(),
+                DueDate = order.Due.ToDate(),
 //                AdditionalFees = 
                 Refresh = refresh
             });
@@ -56,15 +54,6 @@ namespace Reggora.Api.Requests.Lender.Orders
                 [JsonProperty("amount")]
                 public int Amount { get; set; }
             }
-        }
-
-        public class Response
-        {
-            [JsonProperty("data")]
-            public string Data { get; set; }
-
-            [JsonProperty("status")]
-            public int Status { get; set; }
         }
     }
 }

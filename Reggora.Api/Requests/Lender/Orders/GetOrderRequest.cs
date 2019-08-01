@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Reggora.Api.Requests.Lender.Loans;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
-    public class GetOrderRequest : RestRequest
+    public class GetOrderRequest : ReggoraRequest
     {
         public GetOrderRequest(string orderId) : base("lender/order/{order_id}", Method.GET)
         {
             AddParameter("order_id", orderId, ParameterType.UrlSegment);
+        }
+        
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
         }
 
         public class Response
@@ -55,7 +61,7 @@ namespace Reggora.Api.Requests.Lender.Orders
                 public List<Product> Products { get; set; }
                 
                 [JsonProperty("loan_file")]
-                public Loan LoanFile { get; set; }
+                public GetLoanRequest.Response.Loan LoanFile { get; set; }
 
 
                 public class Vendor
@@ -83,27 +89,6 @@ namespace Reggora.Api.Requests.Lender.Orders
 
                     [JsonProperty("amount")]
                     public string Amount { get; set; }
-                }
-                
-                public class Loan
-                {
-                    [JsonProperty("id")]
-                    public string Id { get; set; }
-
-                    [JsonProperty("loan_number")]
-                    public string LoanNumber { get; set; }
-
-                    [JsonProperty("subject_property_address")]
-                    public string SubjectPropertyAddress { get; set; }
-
-                    [JsonProperty("subject_property_city")]
-                    public string SubjectPropertyCity { get; set; }
-
-                    [JsonProperty("subject_property_state")]
-                    public string SubjectPropertyState { get; set; }
-
-                    [JsonProperty("subject_property_zip")]
-                    public int? SubjectPropertyZip { get; set; }
                 }
             }
         }

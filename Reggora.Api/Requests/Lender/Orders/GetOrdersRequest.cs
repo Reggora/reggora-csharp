@@ -5,7 +5,7 @@ using Order = Reggora.Api.Requests.Lender.Orders.GetOrderRequest.Response.Order;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
-    public class GetOrdersRequest : RestRequest
+    public class GetOrdersRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -21,6 +21,11 @@ namespace Reggora.Api.Requests.Lender.Orders
             AddParameter("offset", Offset, ParameterType.QueryString);
             AddParameter("limit", Limit, ParameterType.QueryString);
             AddParameter("order", OrderingToString(), ParameterType.QueryString);
+        }
+        
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
         }
 
         private string OrderingToString()
