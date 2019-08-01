@@ -9,6 +9,7 @@ namespace Reggora.Api.Entity
     {
         private readonly string _name;
         private T _value;
+        private bool _set = false;
         private ChangedCallback _callback;
 
         public T Value
@@ -17,8 +18,9 @@ namespace Reggora.Api.Entity
 
             set
             {
-                if (!EqualityComparer<T>.Default.Equals(_value, value))
+                if (_set == false || !EqualityComparer<T>.Default.Equals(_value, value))
                 {
+                    _set = true;
                     _callback.Invoke(_name);
                     _value = value;
                 }
