@@ -9,7 +9,7 @@ namespace Reggora.Api.Requests.Lender.Loans
         {
             AddParameter("loan_id", loanId, ParameterType.UrlSegment);
         }
-        
+
         public new Response Execute(IRestClient client)
         {
             return Execute<Response>(client);

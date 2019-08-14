@@ -29,16 +29,16 @@ namespace Reggora.Api.Requests.Lender.Vendors
             {
                 [JsonProperty("id")]
                 public string Id { get; set; }
-                
+
                 [JsonProperty("firm_name")]
                 public string FirmName { get; set; }
-                
+
                 [JsonProperty("email")]
                 public string Email { get; set; }
-                
+
                 [JsonProperty("accepting_jobs")]
                 public bool AcceptingJobs { get; set; }
-                
+
                 [JsonProperty("lender_coverage")]
                 public List<Coverage> LenderCoverage { get; set; }
 
@@ -46,10 +46,10 @@ namespace Reggora.Api.Requests.Lender.Vendors
                 {
                     [JsonProperty("county")]
                     public string Country { get; set; }
-                    
+
                     [JsonProperty("state")]
                     public string State { get; set; }
-                    
+
                     [JsonProperty("zip")]
                     public string Zip { get; set; }
                 }

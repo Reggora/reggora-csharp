@@ -1,8 +1,4 @@
-using System.Net;
-using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serializers.Newtonsoft.Json;
-using RestRequest = RestSharp.RestRequest;
 
 namespace Reggora.Api
 {
@@ -10,7 +6,7 @@ namespace Reggora.Api
     {
         protected readonly string IntegrationToken;
         public readonly IRestClient Client;
-        
+
         public ApiClient(string integrationToken)
         {
             IntegrationToken = integrationToken;

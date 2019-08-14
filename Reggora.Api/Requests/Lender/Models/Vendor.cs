@@ -7,7 +7,7 @@ namespace Reggora.Api.Requests.Lender.Models
         public string Email;
         public string Phone;
         public bool AcceptingJobs;
-        public LenderCoverage[] LenderCoverage = {};
+        public LenderCoverage[] LenderCoverage = { };
     }
 
     public class LenderCoverage

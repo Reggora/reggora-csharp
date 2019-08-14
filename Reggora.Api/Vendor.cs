@@ -8,7 +8,7 @@ namespace Reggora.Api
         public Vendor(string integrationToken) : base(integrationToken)
         {
         }
-        
+
         public override Vendor Authenticate(string email, string password)
         {
             var response = new VendorAuthenticateRequest(email, password).Execute(Client);

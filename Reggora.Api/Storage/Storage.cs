@@ -46,8 +46,8 @@ namespace Reggora.Api.Storage
     public class StorageFactory
     {
         public static T Create<T, E, C>()
-        where E : Entity.Entity
-        where T : Storage<E, C>, new()
+            where E : Entity.Entity
+            where T : Storage<E, C>, new()
         {
             return new T();
         }

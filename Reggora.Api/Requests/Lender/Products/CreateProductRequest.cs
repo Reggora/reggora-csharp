@@ -35,7 +35,7 @@ namespace Reggora.Api.Requests.Lender.Products
 
         public class Response
         {
-            [JsonProperty( "data")]
+            [JsonProperty("data")]
             public string Data { get; set; }
 
             [JsonProperty("status")]

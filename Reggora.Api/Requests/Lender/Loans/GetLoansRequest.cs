@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using RestSharp;
-using Loan = Reggora.Api.Requests.Lender.Loans.GetLoanRequest.Response.Loan;
 
 namespace Reggora.Api.Requests.Lender.Loans
 {
@@ -28,7 +27,7 @@ namespace Reggora.Api.Requests.Lender.Loans
                 AddParameter("loan_officer", LoanOfficer, ParameterType.QueryString);
             }
         }
-        
+
         public new Response Execute(IRestClient client)
         {
             return Execute<Response>(client);
@@ -48,7 +47,7 @@ namespace Reggora.Api.Requests.Lender.Loans
         public class Response
         {
             [JsonProperty("data")]
-            public List<Loan> Data { get; set; }
+            public List<GetLoanRequest.Response.Loan> Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }

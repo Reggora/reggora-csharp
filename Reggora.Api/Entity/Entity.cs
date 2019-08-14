@@ -21,7 +21,7 @@ namespace Reggora.Api.Entity
 
         public void UpdateFromRequest(Dictionary<string, dynamic> fields)
         {
-            foreach(KeyValuePair<string, dynamic> entry in fields)
+            foreach (KeyValuePair<string, dynamic> entry in fields)
             {
                 if (Fields.TryGetValue(entry.Key, out var temp))
                 {

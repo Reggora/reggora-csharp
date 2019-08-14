@@ -14,13 +14,13 @@ namespace Reggora.Api.Requests.Lender.Orders
         {
             [JsonProperty("version")]
             public string Version { get; set; }
-            
+
             [JsonProperty("pdf_report")]
             public string Pdf { get; set; }
-            
+
             [JsonProperty("xml_report")]
             public string Xml { get; set; }
-            
+
             [JsonProperty("invoice")]
             public string Invoice { get; set; }
         }

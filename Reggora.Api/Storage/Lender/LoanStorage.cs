@@ -9,7 +9,7 @@ namespace Reggora.Api.Storage.Lender
         public LoanStorage(Api.Lender api) : base(api)
         {
         }
-        
+
         public override Loan Get(string id)
         {
             Known.TryGetValue(id, out var returned);

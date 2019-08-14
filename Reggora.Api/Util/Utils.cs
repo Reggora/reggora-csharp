@@ -23,7 +23,7 @@ namespace Reggora.Api.Util
 
             return dictionary;
         }
-        
+
         public static string DateToString(DateTime? date)
         {
             if (date == null)
@@ -33,7 +33,7 @@ namespace Reggora.Api.Util
 
             return ((DateTime) (object) date).ToString("yyyy-MM-dd");
         }
-        
+
         public static int? IntFromString(string integer)
         {
             if (integer != null)
@@ -43,8 +43,8 @@ namespace Reggora.Api.Util
 
             return null;
         }
-        
-        
+
+
         public static DateTime? DateTimeFromString(string date)
         {
             if (date != null)

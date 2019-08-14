@@ -6,6 +6,7 @@ namespace Reggora.Api.Requests.Lender.Models
     {
         [JsonProperty("username")]
         public string Username;
+
         [JsonProperty("password")]
         public string Password;
     }

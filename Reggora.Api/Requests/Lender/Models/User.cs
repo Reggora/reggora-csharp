@@ -10,7 +10,7 @@ namespace Reggora.Api.Requests.Lender.Models
         public string NmlsId;
         public string Created = "";
         public string Role = "";
-        public User[] MatchedUsers = {};
+        public User[] MatchedUsers = { };
         public bool? SupressNotifications = null;
     }
 }

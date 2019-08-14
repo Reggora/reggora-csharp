@@ -33,7 +33,7 @@ namespace Reggora.Api
                 case HttpStatusCode.InternalServerError:
                     return new InternalServerErrorException(innerError);
             }
-            
+
             return new ReggoraException("Error executing request.", innerError);
         }
     }

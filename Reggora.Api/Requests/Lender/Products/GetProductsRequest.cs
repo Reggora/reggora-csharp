@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using RestSharp;
-using Product = Reggora.Api.Requests.Lender.Products.GetProductRequest.Response.Product;
 
 namespace Reggora.Api.Requests.Lender.Products
 {
@@ -37,7 +36,7 @@ namespace Reggora.Api.Requests.Lender.Products
         public class Response
         {
             [JsonProperty("data")]
-            public List<Product> Data { get; set; }
+            public List<GetProductRequest.Response.Product> Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }

@@ -5,9 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-      <PackageReference Include="RestSharp" Version="106.6.10" />
-      <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+        <PackageReference Include="RestSharp" Version="106.6.10" />
+        <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,7 +23,7 @@
             <DependentUpon>LenderEntities.tt</DependentUpon>
         </Compile>
         <Compile Update="Entity\Entities.cs">
-          <DependentUpon>Entities.tt</DependentUpon>
+            <DependentUpon>Entities.tt</DependentUpon>
         </Compile>
     </ItemGroup>
 

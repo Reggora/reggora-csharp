@@ -29,22 +29,31 @@ namespace Reggora.Api.Requests.Lender.Loans
         {
             [JsonProperty("number")]
             public string LoanNumber { get; set; }
+
             [JsonProperty("appraisal_type")]
-            public string AppraisalType  { get; set; }
+            public string AppraisalType { get; set; }
+
             [JsonProperty("due_date")]
             public string DueDate { get; set; }
+
             [JsonProperty("related_order")]
             public string RelatedOrder { get; set; }
+
             [JsonProperty("subject_property_address")]
             public string SubjectPropertyAddress { get; set; }
+
             [JsonProperty("subject_property_city")]
             public string SubjectPropertyCity { get; set; }
+
             [JsonProperty("subject_property_state")]
             public string SubjectPropertyState { get; set; }
+
             [JsonProperty("subject_property_zip")]
             public string SubjectPropertyZip { get; set; }
+
             [JsonProperty("case_number")]
             public string CaseNumber { get; set; }
+
             [JsonProperty("type")]
             public string LoanType { get; set; }
         }

@@ -15,7 +15,7 @@ namespace Reggora.Api.Requests.Lender.Users
         {
             [JsonProperty("id")]
             public string Id { get; set; }
-            
+
             [JsonProperty("email")]
             public string Email { get; set; }
 
@@ -30,7 +30,7 @@ namespace Reggora.Api.Requests.Lender.Users
 
             [JsonProperty("nmls_id")]
             public string Nmls { get; set; }
-            
+
             [JsonProperty("created")]
             public string Created { get; set; }
 
@@ -44,7 +44,7 @@ namespace Reggora.Api.Requests.Lender.Users
             {
                 [JsonProperty("id")]
                 public string Id { get; set; }
-            
+
                 [JsonProperty("email")]
                 public string Email { get; set; }
 

@@ -26,7 +26,7 @@ namespace Reggora.Api.Util
 
             _modifyCallback?.Invoke();
         }
-        
+
         public new void Clear()
         {
             base.Clear();

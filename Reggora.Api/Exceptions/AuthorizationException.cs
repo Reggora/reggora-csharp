@@ -4,7 +4,8 @@ namespace Reggora.Api.Exceptions
 {
     public class AuthorizationException : ReggoraException
     {
-        public AuthorizationException(Exception innerError) : base("Unauthorized -- Your Bearer Token is invalid.", innerError)
+        public AuthorizationException(Exception innerError) : base("Unauthorized -- Your Bearer Token is invalid.",
+            innerError)
         {
         }
 

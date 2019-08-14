@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using RestSharp;
-using Order = Reggora.Api.Requests.Lender.Orders.GetOrderRequest.Response.Order;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
@@ -22,7 +21,7 @@ namespace Reggora.Api.Requests.Lender.Orders
             AddParameter("limit", Limit, ParameterType.QueryString);
             AddParameter("order", OrderingToString(), ParameterType.QueryString);
         }
-        
+
         public new Response Execute(IRestClient client)
         {
             return Execute<Response>(client);
@@ -42,7 +41,7 @@ namespace Reggora.Api.Requests.Lender.Orders
         public class Response
         {
             [JsonProperty("data")]
-            public List<Order> Data { get; set; }
+            public List<GetOrderRequest.Response.Order> Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
