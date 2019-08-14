@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Reggora.Api.Storage;
 
 namespace Reggora.Api.Entity
@@ -23,11 +25,20 @@ namespace Reggora.Api.Entity
         {
             foreach (KeyValuePair<string, dynamic> entry in fields)
             {
-                if (Fields.TryGetValue(entry.Key, out var temp))
+                if (Fields.TryGetValue(entry.Key, out var field))
                 {
-                    if (temp is EntityField<dynamic> field)
+                    // do any conversion/casting from storage to object form (string -> date time)
+                    var converted = field.GetType().GetMethod("ConvertIncoming", BindingFlags.Public | BindingFlags.Instance)?.Invoke(field, new object[] { entry.Value });
+                    var ObjField = field.GetType()
+                        .GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance);
+                    try
                     {
-                        field.Value = entry.Value;
+                        // set the property on the field using reflection because we have no way to cast to a EntityField<dynamic> at compile time
+                        ObjField?.SetValue(field, converted);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        throw new InvalidCastException($"Cannot cast '{entry.Value.GetType()}' to {ObjField.FieldType}!");
                     }
                 }
             }
@@ -36,6 +47,12 @@ namespace Reggora.Api.Entity
         protected void BuildField<T>(ref EntityField<T> field, string name)
         {
             field = new EntityField<T>(name, propertyName => DirtyFields.Add(propertyName));
+            Fields.Add(name, field);
+        }
+        
+        protected void BuildField<T>(ref EntityField<T> field, string conversionType, string name)
+        {
+            field = new EntityField<T>(name, conversionType, propertyName => DirtyFields.Add(propertyName));
             Fields.Add(name, field);
         }
 

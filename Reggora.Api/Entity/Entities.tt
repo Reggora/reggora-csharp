@@ -66,9 +66,18 @@ foreach (XmlNode field in entity.SelectNodes("field"))
 <#
 foreach (XmlNode field in entity.SelectNodes("field"))
 {
+if(field.Attributes["jsonType"] != null)
+{
+#>
+            BuildField(ref _<#= field.Attributes["name"].Value #>, "<#= field.Attributes["jsonType"].Value #>", "<#= field.Attributes["jsonProperty"]?.Value ?? field.Attributes["name"].Value #>");
+<#
+}
+else
+{
 #>
             BuildField(ref _<#= field.Attributes["name"].Value #>, "<#= field.Attributes["jsonProperty"]?.Value ?? field.Attributes["name"].Value #>");
 <#
+} // end if
 } // foreach
 #>
         }
@@ -97,7 +106,7 @@ foreach (XmlNode entry in _enum.SelectNodes("entry"))
 
         public static <#= UpperInitial(_enum.Attributes["name"].Value) #> <#= UpperInitial(_enum.Attributes["name"].Value) #>FromString(string value)
         {
-            switch(value)
+            switch(value.ToLowerInvariant())
             {
 <#
 foreach (XmlNode entry in _enum.SelectNodes("entry"))
