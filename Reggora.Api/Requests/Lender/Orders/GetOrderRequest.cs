@@ -20,10 +20,16 @@ namespace Reggora.Api.Requests.Lender.Orders
         public class Response
         {
             [JsonProperty("data")]
-            public Order Data { get; set; }
+            public NestedOrder Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
+            public class NestedOrder
+            {
+                [JsonProperty("order")]
+                public Order Order { get; set; }
+            }
 
             public class Order
             {
@@ -49,7 +55,7 @@ namespace Reggora.Api.Requests.Lender.Orders
                 public string Created { get; set; }
 
                 [JsonProperty("allocation_mode")]
-                public string Allocation { get; set; }
+                public string AllocationMode { get; set; }
 
                 [JsonProperty("requested_vendors")]
                 public List<Vendor> Vendors { get; set; }

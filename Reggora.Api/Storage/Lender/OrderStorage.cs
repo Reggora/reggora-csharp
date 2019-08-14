@@ -19,7 +19,7 @@ namespace Reggora.Api.Storage.Lender
                 // TODO: Verify response
                 var result = new GetOrderRequest(id).Execute(Api.Client).Data;
                 returned = new Order();
-                returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result));
+                returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result.Order));
                 Known.Add(returned.Id, returned);
             }
 

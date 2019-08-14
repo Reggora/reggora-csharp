@@ -10,8 +10,7 @@ namespace Reggora.Api.Requests
         protected ReggoraRequest(string resource, Method method) : base(resource, method)
         {
             RequestFormat = DataFormat.Json;
-            JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializer
-                {NullValueHandling = NullValueHandling.Ignore});
+            JsonSerializer = new NewtonsoftJsonSerializer();
         }
 
         protected T Execute<T>(IRestClient client) where T : new()
