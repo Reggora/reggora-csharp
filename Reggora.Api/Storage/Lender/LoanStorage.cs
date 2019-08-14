@@ -1,4 +1,4 @@
-using Reggora.Api.Entity.Lender;
+using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Loans;
 
 namespace Reggora.Api.Storage.Lender
@@ -18,7 +18,7 @@ namespace Reggora.Api.Storage.Lender
                 // TODO: Verify response
                 var result = new GetLoanRequest(id).Execute(Api.Client).Data;
                 returned = new Loan().FromGetRequest(result);
-                Known.Add(returned.Id.Value, returned);
+                Known.Add(returned.Id, returned);
             }
 
             return returned;

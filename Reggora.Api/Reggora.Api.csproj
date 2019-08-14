@@ -10,4 +10,21 @@
       <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Entity\Entities.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Entities.cs</LastGenOutput>
+            <DependentUpon>Entities.xml</DependentUpon>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Entity\Entities.cs">
+            <DependentUpon>LenderEntities.tt</DependentUpon>
+        </Compile>
+        <Compile Update="Entity\Entities.cs">
+          <DependentUpon>Entities.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
 </Project>

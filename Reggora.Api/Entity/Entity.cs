@@ -6,14 +6,7 @@ namespace Reggora.Api.Entity
 {
     public abstract class Entity
     {
-        public readonly EntityField<string> Id;
-
         public readonly List<string> DirtyFields = new List<string>();
-
-        public Entity()
-        {
-            BuildField(ref Id, nameof(Id));
-        }
 
         public bool Dirty()
         {

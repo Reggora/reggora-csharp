@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
-using Reggora.Api.Entity.Lender;
+using Reggora.Api.Entity;
+using Reggora.Api.Util;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Loans
@@ -10,15 +11,15 @@ namespace Reggora.Api.Requests.Lender.Loans
         {
             AddJsonBody(new Request
             {
-                LoanNumber = loan.Number.Value.ToString(),
-                AppraisalType = loan.Type.Value,
-                DueDate = loan.Due.ToDate(),
-                SubjectPropertyAddress = loan.Property.Value.Address.Value,
-                SubjectPropertyCity = loan.Property.Value.City.Value,
-                SubjectPropertyState = loan.Property.Value.State.Value,
-                SubjectPropertyZip = loan.Property.Value.Zip.Value,
+                LoanNumber = loan.Number.ToString(),
+                AppraisalType = loan.Type,
+                DueDate = Utils.DateToString(loan.Due),
+                SubjectPropertyAddress = loan.PropertyAddress,
+                SubjectPropertyCity = loan.PropertyCity,
+                SubjectPropertyState = loan.PropertyState,
+                SubjectPropertyZip = loan.PropertyZip,
                 CaseNumber = loan.Number.ToString(),
-                LoanType = loan.Type.Value
+                LoanType = loan.Type
             });
         }
 
@@ -27,7 +28,7 @@ namespace Reggora.Api.Requests.Lender.Loans
             [JsonProperty("number")]
             public string LoanNumber { get; set; }
             [JsonProperty("appraisal_type")]
-            public string AppraisalType  { get; set; }
+            public string AppraisalType { get; set; }
             [JsonProperty("due_date")]
             public string DueDate { get; set; }
             [JsonProperty("related_order")]

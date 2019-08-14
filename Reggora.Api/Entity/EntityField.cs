@@ -5,7 +5,7 @@ namespace Reggora.Api.Entity
 {
     public delegate void ChangedCallback(string propertyName);
 
-    public class EntityField<T> : EntityField
+    public class EntityField<T>
     {
         private readonly string _name;
         private T _value;
@@ -31,51 +31,6 @@ namespace Reggora.Api.Entity
         {
             _name = name;
             _callback = callback;
-        }
-
-        public string ToDate()
-        {
-            if (typeof(T) == typeof(DateTime))
-            {
-                if (_value == null)
-                {
-                    return "";
-                }
-
-                return ((DateTime) (object) _value).ToString("yyyy-MM-dd");
-            }
-
-            throw new InvalidCastException($"Cannot cast '{typeof(T)}' to '{typeof(DateTime)}'!");
-        }
-    }
-
-    public partial class EntityField
-    {
-        public static int? IntFromString(string integer)
-        {
-            if (integer != null)
-            {
-                return Int32.Parse(integer);
-            }
-
-            return null;
-        }
-        
-        
-        public static DateTime? DateTimeFromString(string date)
-        {
-            if (date != null)
-            {
-                try
-                {
-                    return DateTime.Parse(date);
-                }
-                catch (FormatException)
-                {
-                }
-            }
-
-            return null;
         }
     }
 }

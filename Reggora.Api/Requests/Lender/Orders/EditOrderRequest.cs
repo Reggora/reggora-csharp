@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Reggora.Api.Entity.Lender;
+using Reggora.Api.Entity;
+using Reggora.Api.Util;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
@@ -13,11 +14,11 @@ namespace Reggora.Api.Requests.Lender.Orders
 
             AddJsonBody(new Request
             {
-                Allocation = Order.AllocationToString(order.Allocation.Value),
-                Loan = order.Loan.Entity.Id.Value,
-                Priority = Order.PriorityToString(order.Priority.Value),
+                Allocation = Order.AllocationModeToString(order.Allocation),
+//                Loan = order.Loan.Entity.Id,
+                Priority = Order.PriorityTypeToString(order.Priority),
 //                Products = Array.ConvertAll(order.Products, input => input.Id).ToList(),
-                DueDate = order.Due.ToDate(),
+                DueDate = Utils.DateToString(order.Due),
 //                AdditionalFees = 
                 Refresh = refresh
             });

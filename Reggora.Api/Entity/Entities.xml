@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<entities apiVersion="1">
+    <entity name="loan">
+        <field name="id" type="string"/>
+        <field name="number" type="int" nullable="true"/>
+        <field name="type" type="string"/>
+        <field name="due" type="DateTime" nullable="true" jsonProperty="due_date"/>
+        <field name="created" type="DateTime" nullable="true" />
+        <field name="updated" type="DateTime" nullable="true" />
+        <field name="propertyAddress" type="string" jsonProperty="subject_property_address"/>
+        <field name="propertyCity" type="string" jsonProperty="subject_property_city"/>
+        <field name="propertyState" type="string" jsonProperty="subject_property_state"/>
+        <field name="propertyZip" type="string" jsonProperty="subject_property_zip"/>
+        <field name="caseNumber" type="string" nullable="true" jsonProperty="case_number"/>
+    </entity>
+    <entity name="order">
+        <enum name="priorityType">
+            <entry name="automatic" jsonValue="automatically"/>
+            <entry name="manual" jsonValue="manually"/>
+        </enum>
+        <enum name="allocationMode">
+            <entry name="normal"/>
+            <entry name="rush"/>
+        </enum>
+
+        <field name="id" type="string"/>
+        <field name="status" type="string"/>
+        <field name="priority" type="PriorityType" nullable="true"/>
+        <field name="due" type="DateTime" nullable="true" jsonProperty="due_date"/>
+        <field name="inspectedAt" type="DateTime" nullable="true" jsonProperty="inspected_at" />
+        <field name="updated" type="DateTime" nullable="true" />
+        <field name="allocation" type="AllocationMode" jsonProperty="allocation_mode"/>
+        <field name="inspected" type="bool" jsonProperty="inspection_complete"/>
+    </entity>
+</entities>

@@ -1,4 +1,4 @@
-using Reggora.Api.Entity.Lender;
+using Reggora.Api.Entity;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
@@ -7,7 +7,7 @@ namespace Reggora.Api.Requests.Lender.Orders
     {
         public CancelOrderRequest(Order order) : base("lender/order/{order_id}", Method.DELETE)
         {
-            AddParameter("order_id", order.Id.Value, ParameterType.UrlSegment);
+            AddParameter("order_id", order.Id, ParameterType.UrlSegment);
         }
     }
 }

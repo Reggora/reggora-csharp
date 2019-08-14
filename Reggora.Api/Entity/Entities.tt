@@ -1,0 +1,130 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Xml" #>
+<#
+
+string path = this.Host.ResolvePath("");
+XmlDocument doc = new XmlDocument();
+doc.Load(path + @"\Entities.xml");
+XmlNode root = doc.DocumentElement;
+
+#>
+//
+// WARNING: T4 GENERATED CODE - DO NOT EDIT
+//
+
+using System;
+
+namespace Reggora.Api.Entity
+{
+<#
+foreach (XmlNode entity in root.SelectNodes("entity"))
+{
+#>
+    public class <#= UpperInitial(entity.Attributes["name"].Value) #> : Entity
+    {
+<#
+foreach (XmlNode _enum in entity.SelectNodes("enum"))
+{
+#>
+        public enum <#= UpperInitial(_enum.Attributes["name"].Value) #>
+        {
+<#
+foreach (XmlNode entry in _enum.SelectNodes("entry"))
+{
+#>
+            <#= UpperInitial(entry.Attributes["name"].Value) #>,
+<#
+} // foreach
+#>
+        }
+<#
+} // foreach
+#>
+
+<#
+foreach (XmlNode field in entity.SelectNodes("field"))
+{
+#>
+        public <#= field.Attributes["type"].Value #> <#= UpperInitial(field.Attributes["name"].Value) #> { get => _<#= field.Attributes["name"].Value #>.Value; set => _<#= field.Attributes["name"].Value #>.Value = value; }
+<#
+} // foreach
+#>
+
+<#
+foreach (XmlNode field in entity.SelectNodes("field"))
+{
+#>
+        private readonly EntityField<<#= field.Attributes["type"].Value #>> _<#= field.Attributes["name"].Value #>;
+<#
+} // foreach
+#>
+
+        public <#= UpperInitial(entity.Attributes["name"].Value) #>()
+        {
+<#
+foreach (XmlNode field in entity.SelectNodes("field"))
+{
+#>
+            BuildField(ref _<#= field.Attributes["name"].Value #>, "<#= field.Attributes["jsonProperty"]?.Value ?? field.Attributes["name"].Value #>");
+<#
+} // foreach
+#>
+        }
+
+<#
+foreach (XmlNode _enum in entity.SelectNodes("enum"))
+{
+#>
+        public static string <#= UpperInitial(_enum.Attributes["name"].Value) #>ToString(<#= UpperInitial(_enum.Attributes["name"].Value) #>? value)
+        {
+            switch(value)
+            {
+<#
+foreach (XmlNode entry in _enum.SelectNodes("entry"))
+{
+#>
+                case <#= UpperInitial(_enum.Attributes["name"].Value) #>.<#= UpperInitial(entry.Attributes["name"].Value) #>:
+                    return "<#= entry.Attributes["jsonValue"]?.Value ?? entry.Attributes["name"].Value #>";
+<#
+} // foreach
+#>
+            }
+
+            throw new InvalidCastException($"Cannot cast '{typeof(<#= UpperInitial(_enum.Attributes["name"].Value) #>)}' to string!");
+        }
+
+        public static <#= UpperInitial(_enum.Attributes["name"].Value) #> <#= UpperInitial(_enum.Attributes["name"].Value) #>FromString(string value)
+        {
+            switch(value)
+            {
+<#
+foreach (XmlNode entry in _enum.SelectNodes("entry"))
+{
+#>
+                case "<#= entry.Attributes["jsonValue"]?.Value ?? entry.Attributes["name"].Value #>":
+                    return <#= UpperInitial(_enum.Attributes["name"].Value) #>.<#= UpperInitial(entry.Attributes["name"].Value) #>;
+<#
+} // foreach
+#>
+            }
+
+            throw new InvalidCastException($"Cannot cast string '{value}' to '{typeof(<#= UpperInitial(_enum.Attributes["name"].Value) #>)}'!");
+        }
+<#
+} // foreach
+#>
+    }
+<#  
+} // foreach
+#>
+}
+<#+
+
+private string UpperInitial(string name)
+{ 
+	return name[0].ToString().ToUpperInvariant() + name.Substring(1).Replace(@"[]", "s"); 
+}
+
+#>
