@@ -4,7 +4,7 @@
     <entity name="loan">
         <field name="id" type="string" />
         <field name="number" type="int" nullable="true" jsonProperty="loan_number" />
-        <field name="type" type="string" />
+        <field name="type" type="string" jsonProperty="loan_type" />
         <field name="due" type="DateTime" nullable="true" jsonProperty="due_date" jsonType="string" />
         <field name="created" type="DateTime" nullable="true" jsonType="string" />
         <field name="updated" type="DateTime" nullable="true" jsonType="string" />
@@ -13,6 +13,7 @@
         <field name="propertyState" type="string" jsonProperty="subject_property_state" />
         <field name="propertyZip" type="string" jsonProperty="subject_property_zip" />
         <field name="caseNumber" type="string" jsonProperty="case_number" />
+        <field name="appraisalType" type="string" jsonProperty="appraisal_type" />
     </entity>
     <entity name="order">
         <enum name="priorityType">

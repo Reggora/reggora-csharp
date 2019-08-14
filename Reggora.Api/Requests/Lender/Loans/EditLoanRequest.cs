@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Reggora.Api.Entity;
 using Reggora.Api.Util;
 using RestSharp;
+using RestSharp.Serializers.Newtonsoft.Json;
 
 namespace Reggora.Api.Requests.Lender.Loans
 {
@@ -9,20 +10,19 @@ namespace Reggora.Api.Requests.Lender.Loans
     {
         public EditLoanRequest(Loan loan) : base("lender/loan/{loan_id}", Method.PUT)
         {
+            JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializer()
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include
+            });
+
             AddParameter("loan_id", loan.Id, ParameterType.UrlSegment);
 
-            AddJsonBody(new Request
-            {
-                LoanNumber = loan.Number.ToString(),
-                AppraisalType = loan.Type,
-                DueDate = Utils.DateToString(loan.Due),
-                SubjectPropertyAddress = loan.PropertyAddress,
-                SubjectPropertyCity = loan.PropertyCity,
-                SubjectPropertyState = loan.PropertyState,
-                SubjectPropertyZip = loan.PropertyZip,
-                CaseNumber = loan.Number.ToString(),
-                LoanType = loan.Type
-            });
+            var request = new Request();
+            Utils.DictionaryToJsonFields(request, loan.GetDirtyFieldsForRequest());
+
+            AddJsonBody(request);
         }
 
         public class Request
@@ -54,7 +54,7 @@ namespace Reggora.Api.Requests.Lender.Loans
             [JsonProperty("case_number")]
             public string CaseNumber { get; set; }
 
-            [JsonProperty("type")]
+            [JsonProperty("loan_type")]
             public string LoanType { get; set; }
         }
     }

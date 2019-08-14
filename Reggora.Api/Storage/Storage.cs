@@ -27,6 +27,19 @@ namespace Reggora.Api.Storage
 
         public abstract T Get(string id);
 
+        public void Sync()
+        {
+            foreach (var entity in Known.Values)
+            {
+                if (entity.Dirty())
+                {
+                    Save(entity);
+                }
+            }
+        }
+
+        public abstract void Save(T entity);
+
         public void Clear(string id)
         {
             Known.Remove(id);

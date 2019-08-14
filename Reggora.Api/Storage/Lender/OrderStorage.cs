@@ -27,5 +27,20 @@ namespace Reggora.Api.Storage.Lender
 
             return returned;
         }
+
+        public void Save(Order order, bool refresh)
+        {
+            var result = new EditOrderRequest(order, refresh).Execute(Api.Client);
+
+            if (result.Status == 200)
+            {
+                order.Clean();
+            }
+        }
+
+        public override void Save(Order order)
+        {
+            Save(order, false);
+        }
     }
 }

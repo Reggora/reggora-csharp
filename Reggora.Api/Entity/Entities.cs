@@ -20,6 +20,7 @@ namespace Reggora.Api.Entity
         public string PropertyState { get => _propertyState.Value; set => _propertyState.Value = value; }
         public string PropertyZip { get => _propertyZip.Value; set => _propertyZip.Value = value; }
         public string CaseNumber { get => _caseNumber.Value; set => _caseNumber.Value = value; }
+        public string AppraisalType { get => _appraisalType.Value; set => _appraisalType.Value = value; }
 
         private readonly EntityField<string> _id;
         private readonly EntityField<int?> _number;
@@ -32,12 +33,13 @@ namespace Reggora.Api.Entity
         private readonly EntityField<string> _propertyState;
         private readonly EntityField<string> _propertyZip;
         private readonly EntityField<string> _caseNumber;
+        private readonly EntityField<string> _appraisalType;
 
         public Loan()
         {
             BuildField(ref _id, "id");
             BuildField(ref _number, "loan_number");
-            BuildField(ref _type, "type");
+            BuildField(ref _type, "loan_type");
             BuildField(ref _due, "string", "due_date");
             BuildField(ref _created, "string", "created");
             BuildField(ref _updated, "string", "updated");
@@ -46,6 +48,7 @@ namespace Reggora.Api.Entity
             BuildField(ref _propertyState, "subject_property_state");
             BuildField(ref _propertyZip, "subject_property_zip");
             BuildField(ref _caseNumber, "case_number");
+            BuildField(ref _appraisalType, "appraisal_type");
         }
 
     }

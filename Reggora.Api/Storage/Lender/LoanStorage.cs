@@ -27,5 +27,15 @@ namespace Reggora.Api.Storage.Lender
 
             return returned;
         }
+
+        public override void Save(Loan loan)
+        {
+            var result = new EditLoanRequest(loan).Execute(Api.Client);
+
+            if (result.Status == 200)
+            {
+                loan.Clean();
+            }
+        }
     }
 }
