@@ -9,12 +9,12 @@ namespace Reggora.Api.Requests
     {
         protected ReggoraRequest(string resource, Method method) : base(resource, method)
         {
+            RequestFormat = DataFormat.Json;
+            JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializer{NullValueHandling = NullValueHandling.Ignore});
         }
 
         protected T Execute<T>(IRestClient client) where T : new()
         {
-            JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializer{NullValueHandling = NullValueHandling.Ignore});
-            
             var response = client.Execute<T>(this);
 
             if (response.ErrorException != null)

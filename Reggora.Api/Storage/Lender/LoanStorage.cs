@@ -1,5 +1,6 @@
 using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Loans;
+using Reggora.Api.Util;
 
 namespace Reggora.Api.Storage.Lender
 {
@@ -17,7 +18,8 @@ namespace Reggora.Api.Storage.Lender
             {
                 // TODO: Verify response
                 var result = new GetLoanRequest(id).Execute(Api.Client).Data;
-                returned = new Loan().FromGetRequest(result);
+                returned = new Loan();
+                returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result));
                 Known.Add(returned.Id, returned);
             }
 

@@ -1,5 +1,6 @@
 using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Orders;
+using Reggora.Api.Util;
 
 namespace Reggora.Api.Storage.Lender
 {
@@ -8,7 +9,7 @@ namespace Reggora.Api.Storage.Lender
         public OrderStorage(Api.Lender api) : base(api)
         {
         }
-        
+
         public override Order Get(string id)
         {
             Known.TryGetValue(id, out var returned);
@@ -17,7 +18,8 @@ namespace Reggora.Api.Storage.Lender
             {
                 // TODO: Verify response
                 var result = new GetOrderRequest(id).Execute(Api.Client).Data;
-                returned = new Order().FromGetRequest(result);
+                returned = new Order();
+                returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result));
                 Known.Add(returned.Id, returned);
             }
 
