@@ -16,11 +16,13 @@ namespace Reggora.Api.Storage.Lender
 
             if (returned == null)
             {
-                // TODO: Verify response
-                var result = new GetOrderRequest(id).Execute(Api.Client).Data;
-                returned = new Order();
-                returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result.Order));
-                Known.Add(returned.Id, returned);
+                var result = new GetOrderRequest(id).Execute(Api.Client);
+                if (result.Status == 200)
+                {
+                    returned = new Order();
+                    returned.UpdateFromRequest(Utils.DictionaryOfJsonFields(result.Data.Order));
+                    Known.Add(returned.Id, returned);
+                }
             }
 
             return returned;
