@@ -12,7 +12,7 @@
         <field name="propertyCity" type="string" jsonProperty="subject_property_city"/>
         <field name="propertyState" type="string" jsonProperty="subject_property_state"/>
         <field name="propertyZip" type="string" jsonProperty="subject_property_zip"/>
-        <field name="caseNumber" type="string" nullable="true" jsonProperty="case_number"/>
+        <field name="caseNumber" type="string" jsonProperty="case_number"/>
     </entity>
     <entity name="order">
         <enum name="priorityType">

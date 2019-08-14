@@ -47,7 +47,7 @@ foreach (XmlNode entry in _enum.SelectNodes("entry"))
 foreach (XmlNode field in entity.SelectNodes("field"))
 {
 #>
-        public <#= field.Attributes["type"].Value #> <#= UpperInitial(field.Attributes["name"].Value) #> { get => _<#= field.Attributes["name"].Value #>.Value; set => _<#= field.Attributes["name"].Value #>.Value = value; }
+        public <#= field.Attributes["type"].Value + (field.Attributes["nullable"] == null ? "" : "?") #> <#= UpperInitial(field.Attributes["name"].Value) #> { get => _<#= field.Attributes["name"].Value #>.Value; set => _<#= field.Attributes["name"].Value #>.Value = value; }
 <#
 } // foreach
 #>
@@ -56,7 +56,7 @@ foreach (XmlNode field in entity.SelectNodes("field"))
 foreach (XmlNode field in entity.SelectNodes("field"))
 {
 #>
-        private readonly EntityField<<#= field.Attributes["type"].Value #>> _<#= field.Attributes["name"].Value #>;
+        private readonly EntityField<<#= field.Attributes["type"].Value + (field.Attributes["nullable"] == null ? "" : "?") #>> _<#= field.Attributes["name"].Value #>;
 <#
 } // foreach
 #>
