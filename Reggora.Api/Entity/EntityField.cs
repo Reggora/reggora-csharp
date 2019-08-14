@@ -64,5 +64,28 @@ namespace Reggora.Api.Entity
 
             return value;
         }
+        
+        public dynamic ConvertOutgoing(dynamic value)
+        {
+            if (_conversionType != null)
+            {
+                if (typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTime?))
+                {
+                    return Utils.DateToString(value);
+                }
+                
+                if (typeof(T) == typeof(Order.AllocationMode) || typeof(T) == typeof(Order.AllocationMode?))
+                {
+                    return Order.AllocationModeToString(value);
+                }
+                
+                if (typeof(T) == typeof(Order.PriorityType) || typeof(T) == typeof(Order.PriorityType?))
+                {
+                    return Order.PriorityTypeToString(value);
+                }
+            }
+
+            return value;
+        }
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Reggora.Api.Requests;
 using Reggora.Api.Storage;
+using Reggora.Api.Util;
 
 namespace Reggora.Api.Entity
 {
@@ -28,20 +30,43 @@ namespace Reggora.Api.Entity
                 if (Fields.TryGetValue(entry.Key, out var field))
                 {
                     // do any conversion/casting from storage to object form (string -> date time)
-                    var converted = field.GetType().GetMethod("ConvertIncoming", BindingFlags.Public | BindingFlags.Instance)?.Invoke(field, new object[] { entry.Value });
-                    var ObjField = field.GetType()
+                    var converted = field.GetType()
+                        .GetMethod("ConvertIncoming", BindingFlags.Public | BindingFlags.Instance)
+                        ?.Invoke(field, new object[] {entry.Value});
+                    var fieldValue = field.GetType()
                         .GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance);
                     try
                     {
                         // set the property on the field using reflection because we have no way to cast to a EntityField<dynamic> at compile time
-                        ObjField?.SetValue(field, converted);
+                        fieldValue?.SetValue(field, converted);
                     }
                     catch (ArgumentException e)
                     {
-                        throw new InvalidCastException($"Cannot cast '{entry.Value.GetType()}' to {ObjField.FieldType}!");
+                        throw new InvalidCastException(
+                            $"Cannot cast '{entry.Value.GetType()}' to {fieldValue?.FieldType}!");
                     }
                 }
             }
+        }
+
+        public Dictionary<string, dynamic> GetDirtyFieldsForRequest()
+        {
+            var dictionary = new Dictionary<string, dynamic>();
+
+            foreach (var name in DirtyFields)
+            {
+                var field = Fields[name];
+                // get the property on the field using reflection because we have no way to cast to a EntityField<dynamic> at compile time
+                var fieldValue = field.GetType()
+                    .GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance);
+                // do any conversion/casting from storage to object form (date time -> string)
+                var converted = field.GetType()
+                    .GetMethod("ConvertOutgoing", BindingFlags.Public | BindingFlags.Instance)?.Invoke(Fields[name], new[] {fieldValue?.GetValue(field)});
+
+                dictionary.Add(name, converted);
+            }
+
+            return dictionary;
         }
 
         protected void BuildField<T>(ref EntityField<T> field, string name)
@@ -49,7 +74,7 @@ namespace Reggora.Api.Entity
             field = new EntityField<T>(name, propertyName => DirtyFields.Add(propertyName));
             Fields.Add(name, field);
         }
-        
+
         protected void BuildField<T>(ref EntityField<T> field, string conversionType, string name)
         {
             field = new EntityField<T>(name, conversionType, propertyName => DirtyFields.Add(propertyName));
