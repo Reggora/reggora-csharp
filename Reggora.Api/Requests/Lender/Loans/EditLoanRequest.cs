@@ -27,7 +27,7 @@ namespace Reggora.Api.Requests.Lender.Loans
 
         public class Request
         {
-            [JsonProperty("number")]
+            [JsonProperty("loan_number")]
             public string LoanNumber { get; set; }
 
             [JsonProperty("appraisal_type")]

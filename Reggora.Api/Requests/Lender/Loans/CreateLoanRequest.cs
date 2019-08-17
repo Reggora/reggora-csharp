@@ -7,7 +7,7 @@ namespace Reggora.Api.Requests.Lender.Loans
 {
     public class CreateLoanRequest : ReggoraRequest
     {
-        public CreateLoanRequest(Loan loan) : base("lender/loan/create", Method.POST)
+        public CreateLoanRequest(Loan loan) : base("/lender/loan", Method.POST)
         {
             AddJsonBody(new Request
             {
@@ -25,7 +25,7 @@ namespace Reggora.Api.Requests.Lender.Loans
 
         public class Request
         {
-            [JsonProperty("number")]
+            [JsonProperty("loan_number")]
             public string LoanNumber { get; set; }
 
             [JsonProperty("appraisal_type")]
@@ -52,7 +52,7 @@ namespace Reggora.Api.Requests.Lender.Loans
             [JsonProperty("case_number")]
             public string CaseNumber { get; set; }
 
-            [JsonProperty("type")]
+            [JsonProperty("loan_type")]
             public string LoanType { get; set; }
         }
     }

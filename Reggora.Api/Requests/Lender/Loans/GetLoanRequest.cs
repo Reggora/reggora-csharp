@@ -70,7 +70,7 @@ namespace Reggora.Api.Requests.Lender.Loans
                 [JsonProperty("case_number")]
                 public string CaseNumber { get; set; }
 
-                [JsonProperty("type")]
+                [JsonProperty("loan_type")]
                 public string LoanType { get; set; }
 
                 public class Officer

@@ -10,7 +10,7 @@ namespace Reggora.Api.Entity
     {
 
         public string Id { get => _id.Value; set => _id.Value = value; }
-        public int? Number { get => _number.Value; set => _number.Value = value; }
+        public string Number { get => _number.Value; set => _number.Value = value; }
         public string Type { get => _type.Value; set => _type.Value = value; }
         public DateTime? Due { get => _due.Value; set => _due.Value = value; }
         public DateTime? Created { get => _created.Value; set => _created.Value = value; }
@@ -23,7 +23,7 @@ namespace Reggora.Api.Entity
         public string AppraisalType { get => _appraisalType.Value; set => _appraisalType.Value = value; }
 
         private readonly EntityField<string> _id;
-        private readonly EntityField<int?> _number;
+        private readonly EntityField<string> _number;
         private readonly EntityField<string> _type;
         private readonly EntityField<DateTime?> _due;
         private readonly EntityField<DateTime?> _created;

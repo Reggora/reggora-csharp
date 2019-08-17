@@ -42,5 +42,30 @@ namespace Reggora.Api.Storage.Lender
         {
             Save(order, false);
         }
+
+        public override Order Create(Order order)
+        {
+            Known.TryGetValue(order.Id, out var returned);
+            var result = new CreateOrderRequest(order).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                returned = Get(result.Data);
+
+            }
+
+            return returned;
+        }
+
+        public override Order Edit(Order order)
+        {
+            Order response = new Order();
+            var result = new EditOrderRequest(order, false).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = Get(result.Data);
+                order.Clean();
+            }
+            return response;
+        }
     }
 }

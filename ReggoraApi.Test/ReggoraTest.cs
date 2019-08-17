@@ -1,69 +1,112 @@
-﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Reggora.Api.Entity;
+using Reggora.Api;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
-using Reggora.Api.Exceptions;
+using System.Text;
 
-namespace Reggora.Api.Test
+namespace ReggoraApi.Test
 {
-    class Program
+    [TestClass]
+    public class ReggoraTest
     {
-        static void Main(string[] args)
+        private Lender lender;
+
+        [TestInitialize]
+        public void Initialize()
         {
-            Lender();
-            Vendor();
+            if (lender == null)
+            {
+                lender = new Lender(Config.GetProperty("lender.token", ""));
+                Console.WriteLine("Authenticating...");
+                lender.Authenticate(Config.GetProperty("lender.email", ""), Config.GetProperty("lender.password", ""));
+            }
         }
 
-        public static void Lender()
+        public string RandomString(int size, bool lowerCase)
         {
-            Lender lender = new Lender(Config.GetProperty("lender.token", ""));
-            try
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for (int i = 0; i < size; i++)
             {
-                lender.Authenticate(Config.GetProperty("lender.email", ""),
-                    Config.GetProperty("lender.password", ""));
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
             }
-            catch (ReggoraException e)
-            {
-                Console.WriteLine("Unable to authenticate to lender API: " + e.Message);
-                return;
-            }
-
-            try
-            {
-                var loan = lender.Loans.Get("5d529b9931c9b3000c9dda45");
-            }
-            catch (ReggoraException e)
-            {
-                Console.WriteLine($"Unable to manage loans: {e.Message}");
-            }
-            
-            try
-            {
-                var order = lender.Orders.Get("5d529c1b31c9b3000b0e5785");
-            }
-            catch (ReggoraException e)
-            {
-                Console.WriteLine($"Unable to manage orders: {e.Message}");
-            }
-
-            return;
+            if (lowerCase)
+                return builder.ToString().ToLower();
+            return builder.ToString();
         }
 
-        public static void Vendor()
+        [TestMethod]
+        public void TestCreateLoan()
         {
-            Vendor vendor;
+            Loan loan = new Loan()
+            {
+                Number = RandomString(7, false),
+                Type = "FHA",
+                Due = DateTime.Now.AddYears(1),
+                PropertyAddress = "100 Mass Ave",
+                PropertyCity = "Boston",
+                PropertyState = "MA",
+                PropertyZip = "02192",
+                CaseNumber = "10029MA",
+                AppraisalType = "Refinance"
+            };
+
             try
             {
-                vendor = Reggora.Vendor(Config.GetProperty("vendor.email", ""),
-                    Config.GetProperty("vendor.password", ""), Config.GetProperty("vendor.token", ""));
+                Loan createdLoan = lender.Loans.Create(loan);
+                SampleObjects._loan = createdLoan;
+                Assert.IsNotNull(createdLoan.Id, "Expected an ID of new Loan");
             }
-            catch (ReggoraException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Unable to authenticate to vendor API: " + e.Message);
-                return;
+                throw new Exception(e.ToString());
             }
         }
+
+        [TestMethod]
+        public void TestGetLoan()
+        {
+            Loan testLoan = SampleObjects._loan;
+            string expectedId = testLoan != null ? testLoan.Id : "5d56720d6dcf6d000d6e902c";
+            var loan = lender.Loans.Get(expectedId);
+            Assert.AreEqual(expectedId, loan.Id, String.Format("Tried to get land by ID:'{0}'; Actual ID of loan: {1}",
+                                     expectedId, loan.Id));
+        }
+
+        [TestMethod]
+        public void TestEditLoan()
+        {
+            Loan testLoan = SampleObjects._loan;
+            string newLoanNumber = RandomString(7, false);
+            Loan newLoan = new Loan()
+            {
+                Id = testLoan.Id,
+                Number = newLoanNumber
+            };
+            try
+            {
+                Loan updatedLoan = lender.Loans.Edit(newLoan);
+                Assert.AreEqual(updatedLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
+                                     newLoanNumber, updatedLoan.Number));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+    }
+
+    public class SampleObjects
+    {
+        public static Loan _loan { get; set; }
+
     }
 
     public class Config
@@ -78,7 +121,7 @@ namespace Reggora.Api.Test
                 string username = Environment.UserName;
 
                 string fileContents = string.Empty;
-                string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                string path = System.AppDomain.CurrentDomain.BaseDirectory;
                 if (path != null)
                 {
                     var configFilePath = Path.Combine(path, $"example.{username}.conf");
@@ -112,7 +155,7 @@ namespace Reggora.Api.Test
         {
             Dictionary<string, string> newDictionairy = new Dictionary<string, string>();
             foreach (
-                string rawLine in data.Split(new[] {"\r\n", "\n", Environment.NewLine},
+                string rawLine in data.Split(new[] { "\r\n", "\n", Environment.NewLine },
                     StringSplitOptions.RemoveEmptyEntries))
             {
                 string line = rawLine.Trim();
@@ -173,4 +216,5 @@ namespace Reggora.Api.Test
             return KeyValues[property];
         }
     }
+
 }

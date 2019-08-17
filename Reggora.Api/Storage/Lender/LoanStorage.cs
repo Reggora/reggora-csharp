@@ -31,11 +31,36 @@ namespace Reggora.Api.Storage.Lender
         public override void Save(Loan loan)
         {
             var result = new EditLoanRequest(loan).Execute(Api.Client);
-
             if (result.Status == 200)
             {
                 loan.Clean();
             }
         }
+
+        public override Loan Create(Loan loan)
+        {
+            Loan response = new Loan();
+            var result = new CreateLoanRequest(loan).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = Get(result.Data);
+
+            }
+
+            return response;
+        }
+
+        public override Loan Edit(Loan loan)
+        {
+            Loan response = new Loan();
+            var result = new EditLoanRequest(loan).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = Get(result.Data);
+                loan.Clean();
+            }
+            return response;
+        }
+
     }
 }

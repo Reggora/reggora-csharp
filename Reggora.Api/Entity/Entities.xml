@@ -3,7 +3,7 @@
 <entities apiVersion="1">
     <entity name="loan">
         <field name="id" type="string" />
-        <field name="number" type="int" nullable="true" jsonProperty="loan_number" />
+        <field name="number" type="string" nullable="true" jsonProperty="loan_number" />
         <field name="type" type="string" jsonProperty="loan_type" />
         <field name="due" type="DateTime" nullable="true" jsonProperty="due_date" jsonType="string" />
         <field name="created" type="DateTime" nullable="true" jsonType="string" />
