@@ -1,6 +1,7 @@
 using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Loans;
 using Reggora.Api.Util;
+using System.Collections.Generic;
 
 namespace Reggora.Api.Storage.Lender
 {
@@ -8,6 +9,24 @@ namespace Reggora.Api.Storage.Lender
     {
         public LoanStorage(Api.Lender api) : base(api)
         {
+        }
+
+        public List<Loan> All()
+        {
+            var result = new GetLoansRequest().Execute(Api.Client);
+            var fetchedLoans = result.Data.Loans;
+            List<Loan> loans = new List<Loan>();
+
+            if (result.Status == 200)
+            {
+                for (int i = 0; i < fetchedLoans.Count; i++)
+                {
+                    Loan tempLoan = new Loan();
+                    tempLoan.UpdateFromRequest(Utils.DictionaryOfJsonFields(fetchedLoans[i]));
+                    loans.Add(tempLoan);
+                }
+            }
+            return loans;
         }
 
         public override Loan Get(string id)
@@ -37,27 +56,39 @@ namespace Reggora.Api.Storage.Lender
             }
         }
 
-        public override Loan Create(Loan loan)
+        public string Create(Loan loan)
         {
-            Loan response = new Loan();
+            string response = "";
             var result = new CreateLoanRequest(loan).Execute(Api.Client);
             if (result.Status == 200)
             {
-                response = Get(result.Data);
+                response = result.Data;
+                loan.Clean();
 
             }
 
             return response;
         }
 
-        public override Loan Edit(Loan loan)
+        public string Edit(Loan loan)
         {
-            Loan response = new Loan();
+            string response = "";
             var result = new EditLoanRequest(loan).Execute(Api.Client);
             if (result.Status == 200)
             {
-                response = Get(result.Data);
+                response = result.Data;
                 loan.Clean();
+            }
+            return response;
+        }
+
+        public string Delete(string id)
+        {
+            string response = null;
+            var result = new DeleteLoanRequest(id).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
             }
             return response;
         }

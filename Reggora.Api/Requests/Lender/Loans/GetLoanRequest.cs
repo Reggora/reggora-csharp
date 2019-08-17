@@ -5,7 +5,7 @@ namespace Reggora.Api.Requests.Lender.Loans
 {
     public class GetLoanRequest : ReggoraRequest
     {
-        public GetLoanRequest(string loanId) : base("/lender/loan/{loan_id}", Method.GET)
+        public GetLoanRequest(string loanId) : base("lender/loan/{loan_id}", Method.GET)
         {
             AddParameter("loan_id", loanId, ParameterType.UrlSegment);
         }
@@ -14,6 +14,7 @@ namespace Reggora.Api.Requests.Lender.Loans
         {
             return Execute<Response>(client);
         }
+
 
         public class Response
         {

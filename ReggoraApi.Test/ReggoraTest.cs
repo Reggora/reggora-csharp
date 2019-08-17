@@ -40,9 +40,8 @@ namespace ReggoraApi.Test
                 return builder.ToString().ToLower();
             return builder.ToString();
         }
-
-        [TestMethod]
-        public void TestCreateLoan()
+        
+        public string CreateLoan()
         {
             Loan loan = new Loan()
             {
@@ -59,9 +58,9 @@ namespace ReggoraApi.Test
 
             try
             {
-                Loan createdLoan = lender.Loans.Create(loan);
-                SampleObjects._loan = createdLoan;
-                Assert.IsNotNull(createdLoan.Id, "Expected an ID of new Loan");
+                string createdLoanId = lender.Loans.Create(loan);
+                SampleObjects._loan = lender.Loans.Get(createdLoanId);
+                return createdLoanId;
             }
             catch (Exception e)
             {
@@ -70,35 +69,67 @@ namespace ReggoraApi.Test
         }
 
         [TestMethod]
-        public void TestGetLoan()
+        public void A_TestCreateLoan()
         {
+            string createdLoanId = CreateLoan();
+
+            Assert.IsNotNull( createdLoanId, "Expected an ID of new Loan");
+            
+        }
+
+        [TestMethod]
+        public void B_TestGetLoans()
+        {
+            var loans = lender.Loans.All();
+            Assert.IsInstanceOfType(loans, typeof(List<Loan>));
+        }
+
+        [TestMethod]
+        public void C_TestGetLoan()
+        {
+            if (SampleObjects._loan == null) { CreateLoan(); }
             Loan testLoan = SampleObjects._loan;
             string expectedId = testLoan != null ? testLoan.Id : "5d56720d6dcf6d000d6e902c";
-            var loan = lender.Loans.Get(expectedId);
+            Loan loan = lender.Loans.Get(expectedId);
             Assert.AreEqual(expectedId, loan.Id, String.Format("Tried to get land by ID:'{0}'; Actual ID of loan: {1}",
                                      expectedId, loan.Id));
         }
 
         [TestMethod]
-        public void TestEditLoan()
+        public void D_TestEditLoan()
         {
+            if (SampleObjects._loan == null) { CreateLoan(); }
             Loan testLoan = SampleObjects._loan;
+            
             string newLoanNumber = RandomString(7, false);
-            Loan newLoan = new Loan()
-            {
-                Id = testLoan.Id,
-                Number = newLoanNumber
-            };
+            
+            Loan newLoan = new Loan(){ Id = testLoan.Id, Number = newLoanNumber};
             try
             {
-                Loan updatedLoan = lender.Loans.Edit(newLoan);
-                Assert.AreEqual(updatedLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
-                                     newLoanNumber, updatedLoan.Number));
+                string updatedLoanId = lender.Loans.Edit(newLoan);
+                newLoan = lender.Loans.Get(updatedLoanId);
+               
+                Assert.AreEqual(newLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
+                                     newLoanNumber, newLoan.Number));
+                SampleObjects._loan = testLoan;
             }
             catch (Exception e)
             {
                 throw new Exception(e.ToString());
             }
+        }
+
+        [TestMethod]
+        public void E_TestDeleteLoan()
+        {
+            if (SampleObjects._loan == null) { CreateLoan(); }
+            Loan testLoan = SampleObjects._loan;
+
+            string deleteId = testLoan != null ? testLoan.Id : "5d56720d6dcf6d000d6e902c";
+            string response = lender.Loans.Delete(deleteId);
+            SampleObjects._loan = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
         }
 
     }

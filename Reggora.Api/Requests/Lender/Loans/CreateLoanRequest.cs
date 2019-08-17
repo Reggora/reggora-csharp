@@ -7,7 +7,7 @@ namespace Reggora.Api.Requests.Lender.Loans
 {
     public class CreateLoanRequest : ReggoraRequest
     {
-        public CreateLoanRequest(Loan loan) : base("/lender/loan", Method.POST)
+        public CreateLoanRequest(Loan loan) : base("lender/loan", Method.POST)
         {
             AddJsonBody(new Request
             {
