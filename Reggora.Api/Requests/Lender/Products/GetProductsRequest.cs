@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Products
 {
-    public class GetProductsRequest : RestRequest
+    public class GetProductsRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -22,6 +22,10 @@ namespace Reggora.Api.Requests.Lender.Products
             AddParameter("order", OrderingToString(), ParameterType.QueryString);
         }
 
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
+        }
         private string OrderingToString()
         {
             switch (Order)
@@ -36,10 +40,16 @@ namespace Reggora.Api.Requests.Lender.Products
         public class Response
         {
             [JsonProperty("data")]
-            public List<GetProductRequest.Response.Product> Data { get; set; }
+            public NestedProducts Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
+            public class NestedProducts
+            {
+                [JsonProperty("products")]
+                public List<GetProductRequest.Response.Product> Products { get; set; }
+            }
         }
     }
 }

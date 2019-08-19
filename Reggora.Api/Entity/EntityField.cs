@@ -60,6 +60,11 @@ namespace Reggora.Api.Entity
                 {
                     return Order.PriorityTypeFromString(value);
                 }
+
+                if (typeof(T) == typeof(Product.Inspection) || typeof(T) == typeof(Product.Inspection?))
+                {
+                    return Product.InspectionFromString(value);
+                }
             }
 
             return value;
@@ -82,6 +87,11 @@ namespace Reggora.Api.Entity
                 if (typeof(T) == typeof(Order.PriorityType) || typeof(T) == typeof(Order.PriorityType?))
                 {
                     return Order.PriorityTypeToString(value);
+                }
+
+                if (typeof(T) == typeof(Product.Inspection) || typeof(T) == typeof(Product.Inspection?))
+                {
+                    return Product.InspectionToString(value);
                 }
             }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reggora.Api", "Reggora.Api\Reggora.Api.csproj", "{084D568D-58D2-4AB9-940E-0AE51909A9ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReggoraApi.Test", "ReggoraApi.Test\ReggoraApi.Test.csproj", "{D1212A55-926F-4AF6-907A-B5091AEAB682}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReggoraLenderApi.Test", "ReggoraApi.Test\ReggoraLenderApi.Test.csproj", "{D1212A55-926F-4AF6-907A-B5091AEAB682}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

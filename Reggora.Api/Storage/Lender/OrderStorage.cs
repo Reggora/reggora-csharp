@@ -45,7 +45,7 @@ namespace Reggora.Api.Storage.Lender
 
         public string Create(Order order)
         {
-            string response = "";
+            string response = null;
             var result = new CreateOrderRequest(order).Execute(Api.Client);
             if (result.Status == 200)
             {

@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Products
 {
-    public class DeleteProductRequest : RestRequest
+    public class DeleteProductRequest : ReggoraRequest
     {
         public DeleteProductRequest(string productId) : base("lender/product/{product_id}", Method.DELETE)
         {

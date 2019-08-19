@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reggora.Api.Entity;
 using Reggora.Api;
 using System;
@@ -7,8 +7,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Reggora.Api.Requests.Lender.Products;
 
-namespace ReggoraApi.Test
+namespace ReggoraLenderApi.Test
 {
     [TestClass]
     public class ReggoraTest
@@ -68,9 +69,11 @@ namespace ReggoraApi.Test
             }
         }
 
+        // Test Loan Requests
         [TestMethod]
         public void A_TestCreateLoan()
         {
+            Console.WriteLine("Testing Loan Requests...");
             string createdLoanId = CreateLoan();
 
             Assert.IsNotNull( createdLoanId, "Expected an ID of new Loan");
@@ -91,7 +94,7 @@ namespace ReggoraApi.Test
             Loan testLoan = SampleObjects._loan;
             string expectedId = testLoan != null ? testLoan.Id : "5d56720d6dcf6d000d6e902c";
             Loan loan = lender.Loans.Get(expectedId);
-            Assert.AreEqual(expectedId, loan.Id, String.Format("Tried to get land by ID:'{0}'; Actual ID of loan: {1}",
+            Assert.AreEqual(expectedId, loan.Id, String.Format("Tried to get loan by ID:'{0}'; Actual ID of loan: {1}",
                                      expectedId, loan.Id));
         }
 
@@ -132,11 +135,105 @@ namespace ReggoraApi.Test
 
         }
 
+        // Test Order Requests
+        public string CreateOrder()
+        {
+            Order order = new Order()
+            {
+                Allocation = Order.AllocationMode.Automatic,
+                Loan = SampleObjects._loan.Id,
+                Priority = Order.PriorityType.Normal,
+                Products = new string[]{ "5c49dcbb20cb8f002076039a" },
+                Due = DateTime.Now.AddYears(1)
+            };
+
+            try
+            {
+                string createdOrderId = lender.Orders.Create(order);
+                SampleObjects._order = lender.Orders.Get(createdOrderId);
+                return createdOrderId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+        [TestMethod]
+        public void A_TestCreateOrder()
+        {
+            Console.WriteLine("Testing Order Requests...");
+            CreateLoan();
+            string createdOrderId = CreateOrder();
+
+            Assert.IsNotNull(createdOrderId, "Expected an ID of new Order");
+        }
+
+        [TestMethod]
+        public void B_TestGetOrder()
+        {
+            Console.WriteLine("Testing Get a Loan...");
+            string orderId = "5d5a1480cf56d4000de82457";
+            Order order = lender.Orders.Get(orderId);
+            Assert.AreEqual(orderId, order.Id, String.Format("Tried to get order by ID:'{0}'; Actual ID of order: {1}",
+                                     orderId, order.Id));
+        }
+
+        //Test Product Requests
+        public string CreateProduct()
+        {
+            Product product = new Product()
+            {
+                ProductName = "Full Appraisal1",
+                Amount = 100.00f,
+                InspectionType = Product.Inspection.Interior,
+                RequestForms = "1004MC, BPO"
+            };
+            try
+            {
+                string createdProductId = lender.Products.Create(product);
+                SampleObjects._product = lender.Products.Get(createdProductId);
+                return createdProductId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void A_TestCreateProduct()
+        {
+            Console.WriteLine("Testing Product Requests...");
+            string createdProductId = CreateProduct();
+
+            Assert.IsNotNull(createdProductId, "Expected an ID of new Product");
+        }
+
+        [TestMethod]
+        public void B_TestGetProducts()
+        {
+            var products = lender.Products.All();
+            Assert.IsInstanceOfType(products, typeof(List<Product>));
+        }
+
+        [TestMethod]
+        public void C_TestGetProduct()
+        {
+            if (SampleObjects._product == null) { CreateProduct(); }
+            Product testProduct = SampleObjects._product;
+            string expectedId = testProduct != null ? testProduct.Id : "5d4bd10434e305000c322368";
+            Product product = lender.Products.Get(expectedId);
+            Assert.AreEqual(expectedId, product.Id, String.Format("Tried to get product by ID:'{0}'; Actual ID of product: {1}",
+                                     expectedId, product.Id));
+        }
+
     }
 
     public class SampleObjects
     {
         public static Loan _loan { get; set; }
+        public static Order _order { get; set; }
+        public static Product _product { get; set; }
 
     }
 

@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 namespace Reggora.Api.Entity
 {
@@ -67,31 +68,38 @@ namespace Reggora.Api.Entity
 
         public string Id { get => _id.Value; set => _id.Value = value; }
         public string Status { get => _status.Value; set => _status.Value = value; }
+        public AllocationMode Allocation { get => _allocation.Value; set => _allocation.Value = value; }
+        public string Loan { get => _loan.Value; set => _loan.Value = value; }
         public PriorityType? Priority { get => _priority.Value; set => _priority.Value = value; }
+        public string[] Products { get => _products.Value; set => _products.Value = value; }
         public DateTime? Due { get => _due.Value; set => _due.Value = value; }
         public DateTime? InspectedAt { get => _inspectedAt.Value; set => _inspectedAt.Value = value; }
         public DateTime? Updated { get => _updated.Value; set => _updated.Value = value; }
-        public AllocationMode Allocation { get => _allocation.Value; set => _allocation.Value = value; }
+        
         public bool Inspected { get => _inspected.Value; set => _inspected.Value = value; }
 
         private readonly EntityField<string> _id;
         private readonly EntityField<string> _status;
+        private readonly EntityField<AllocationMode> _allocation;
+        private readonly EntityField<string> _loan;
         private readonly EntityField<PriorityType?> _priority;
+        private readonly EntityField<string[]> _products;
         private readonly EntityField<DateTime?> _due;
         private readonly EntityField<DateTime?> _inspectedAt;
         private readonly EntityField<DateTime?> _updated;
-        private readonly EntityField<AllocationMode> _allocation;
         private readonly EntityField<bool> _inspected;
 
         public Order()
         {
             BuildField(ref _id, "id");
             BuildField(ref _status, "status");
+            BuildField(ref _allocation, "string", "allocation_type");
+            BuildField(ref _loan, "loan");
             BuildField(ref _priority, "string", "priority");
+            BuildField(ref _products, "string[]", "products");
             BuildField(ref _due, "string", "due_date");
             BuildField(ref _inspectedAt, "string", "inspected_at");
             BuildField(ref _updated, "string", "updated");
-            BuildField(ref _allocation, "string", "allocation_mode");
             BuildField(ref _inspected, "inspection_complete");
         }
 
@@ -100,9 +108,9 @@ namespace Reggora.Api.Entity
             switch(value)
             {
                 case PriorityType.Normal:
-                    return "normal";
+                    return "Normal";
                 case PriorityType.Rush:
-                    return "rush";
+                    return "Rush";
             }
 
             throw new InvalidCastException($"Cannot cast '{typeof(PriorityType)}' to string!");
@@ -145,5 +153,62 @@ namespace Reggora.Api.Entity
 
             throw new InvalidCastException($"Cannot cast string '{value}' to '{typeof(AllocationMode)}'!");
         }
+
     }
+    public class Product : Entity
+    {
+        public enum Inspection
+        {
+            Interior,
+            Exterior
+        }
+
+        public string Id { get => _id.Value; set => _id.Value = value; }
+        public string ProductName { get => _productName.Value; set => _productName.Value = value; }
+        public float Amount { get => _amount.Value; set => _amount.Value = value; }
+        public Inspection InspectionType { get => _inspectionType.Value; set => _inspectionType.Value = value; }
+        public string RequestForms { get => _requestForms.Value; set => _requestForms.Value = value; }
+
+        private readonly EntityField<string> _id;
+        private readonly EntityField<string> _productName;
+        private readonly EntityField<float> _amount;
+        private readonly EntityField<Inspection> _inspectionType;
+        private readonly EntityField<string> _requestForms;
+
+        public Product()
+        {
+            BuildField(ref _id, "id");
+            BuildField(ref _productName, "product_name");
+            BuildField(ref _amount, "amount");
+            BuildField(ref _inspectionType, "string", "inspection_type");
+            BuildField(ref _requestForms, "requested_forms");
+        }
+
+        public static string InspectionToString(Inspection inspection)
+        {
+            switch (inspection)
+            {
+                case Inspection.Interior:
+                    return "interior";
+                case Inspection.Exterior:
+                    return "exterior";
+            }
+
+            return "";
+        }
+
+        public static Inspection InspectionFromString(string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "interior":
+                    return Inspection.Interior;
+                case "exterior":
+                    return Inspection.Exterior;
+            }
+
+            throw new InvalidCastException($"Cannot cast string '{value}' to '{typeof(Inspection)}'!");
+        }
+    }
+
 }

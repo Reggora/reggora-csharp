@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
+using Reggora.Api.Entity;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Products
 {
-    public class CreateProductRequest : RestRequest
+    public class CreateProductRequest : ReggoraRequest
     {
-        public CreateProductRequest(Product product) : base("lender/product/create", Method.POST)
+        public CreateProductRequest(Product product) : base("lender/product", Method.POST)
         {
             AddJsonBody(new Request
             {
@@ -30,16 +30,7 @@ namespace Reggora.Api.Requests.Lender.Products
             public string Inspection { get; set; }
 
             [JsonProperty("requested_forms")]
-            public List<string> RequestedForms { get; set; }
-        }
-
-        public class Response
-        {
-            [JsonProperty("data")]
-            public string Data { get; set; }
-
-            [JsonProperty("status")]
-            public int Status { get; set; }
+            public string RequestedForms { get; set; }
         }
     }
 }

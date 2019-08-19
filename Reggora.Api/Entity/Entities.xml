@@ -15,23 +15,35 @@
         <field name="caseNumber" type="string" jsonProperty="case_number" />
         <field name="appraisalType" type="string" jsonProperty="appraisal_type" />
     </entity>
-    <entity name="order">
-        <enum name="priorityType">
-            <entry name="normal" />
-            <entry name="rush" />
-        </enum>
-        <enum name="allocationMode">
-            <entry name="automatic" jsonValue="automatically" />
-            <entry name="manual" jsonValue="manually" />
-        </enum>
+  <entity name="order">
+    <enum name="priorityType">
+      <entry name="normal"  jsonValue="Normal" />
+      <entry name="rush"  jsonValue="Rush"/>
+    </enum>
+    <enum name="allocationMode">
+      <entry name="automatic" jsonValue="automatically" />
+      <entry name="manual" jsonValue="manually" />
+    </enum>
 
-        <field name="id" type="string" />
-        <field name="status" type="string" />
-        <field name="priority" type="PriorityType" nullable="true" jsonType="string" />
-        <field name="due" type="DateTime" nullable="true" jsonProperty="due_date" jsonType="string" />
-        <field name="inspectedAt" type="DateTime" nullable="true" jsonProperty="inspected_at" jsonType="string" />
-        <field name="updated" type="DateTime" nullable="true" jsonType="string" />
-        <field name="allocation" type="AllocationMode" jsonProperty="allocation_mode" jsonType="string" />
-        <field name="inspected" type="bool" jsonProperty="inspection_complete" />
-    </entity>
+    <field name="id" type="string" />
+    <field name="status" type="string" />
+    <field name="loan" type="string" />
+    <field name="priority" type="PriorityType" nullable="true" jsonType="string" />
+    <field name="due" type="DateTime" nullable="true" jsonProperty="due_date" jsonType="string" />
+    <field name="inspectedAt" type="DateTime" nullable="true" jsonProperty="inspected_at" jsonType="string" />
+    <field name="updated" type="DateTime" nullable="true" jsonType="string" />
+    <field name="allocation" type="AllocationMode" jsonProperty="allocation_mode" jsonType="string" />
+    <field name="inspected" type="bool" jsonProperty="inspection_complete" />
+  </entity>
+  <entity name="product">
+    <enum name="inspectionType">
+      <entry name="interior"  jsonValue="Interior" />
+      <entry name="exterior"  jsonValue="Exterior"/>
+    </enum>
+
+    <field name="id" type="string" />
+    <field name="productName" type="string" />
+    <field name="amount" type="float" />
+    <field name="requestForms" type="string" />
+  </entity>
 </entities>
