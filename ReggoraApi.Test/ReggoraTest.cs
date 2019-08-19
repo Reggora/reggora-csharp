@@ -41,7 +41,15 @@ namespace ReggoraLenderApi.Test
                 return builder.ToString().ToLower();
             return builder.ToString();
         }
-        
+
+        public string RandomNumber(int startNum = 100000, int endNum = 999999)
+        {
+            Random rnd = new Random();
+            int rand = rnd.Next(startNum, endNum);
+            return rand.ToString();
+        }
+
+        // Test Loan Requests
         public string CreateLoan()
         {
             Loan loan = new Loan()
@@ -68,8 +76,7 @@ namespace ReggoraLenderApi.Test
                 throw new Exception(e.ToString());
             }
         }
-
-        // Test Loan Requests
+        
         [TestMethod]
         public void A_TestCreateLoan()
         {
@@ -263,6 +270,119 @@ namespace ReggoraLenderApi.Test
             Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
 
         }
+
+        // Test User Requests
+        public string CreateUser()
+        {
+            User user = new User()
+            {
+                Email = RandomString(4, false) + "@test.com",
+                PhoneNumber = RandomNumber(),
+                FirstName = "Fake",
+                LastName = "Person" + RandomString(3, true),
+                NmlsId = "MA",
+                Role = "Admin"
+            };
+
+            try
+            {
+                string createdUserId = lender.Users.Create(user);
+                SampleObjects._user = lender.Users.Get(createdUserId);
+                return createdUserId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void A_TestCreateUser()
+        {
+            Console.WriteLine("Testing User Requests...");
+            string createdLoanId = CreateUser();
+
+            Assert.IsNotNull(createdLoanId, "Expected an ID of new User");
+
+        }
+
+        [TestMethod]
+        public void B_TestGetUsers()
+        {
+            var users = lender.Users.All();
+            Assert.IsInstanceOfType(users, typeof(List<User>));
+        }
+
+        [TestMethod]
+        public void C_TestGetUser()
+        {
+            if (SampleObjects._user == null) { CreateUser(); }
+            User testUser = SampleObjects._user;
+            string expectedId = testUser != null ? testUser.Id : "5d5aa161cf56d4000de82465";
+            User user = lender.Users.Get(expectedId);
+            Assert.AreEqual(expectedId, user.Id, String.Format("Tried to get user by ID:'{0}'; Actual ID of user: {1}",
+                                     expectedId, user.Id));
+        }
+
+        [TestMethod]
+        public void D_TestEditUser()
+        {
+            if (SampleObjects._user == null) { CreateUser(); }
+            User testUser = SampleObjects._user;
+
+            string newPhoneNumber = RandomNumber();
+
+            testUser.PhoneNumber = newPhoneNumber;
+            try
+            {
+                string updatedUserId = lender.Users.Edit(testUser);
+                testUser = lender.Users.Get(updatedUserId);
+
+                Assert.AreEqual(testUser.PhoneNumber, newPhoneNumber, String.Format("Expected User Phone Number:'{0}'; Actual Phone Number: {1}",
+                                     newPhoneNumber, testUser.PhoneNumber));
+                SampleObjects._user = testUser;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void E_TestDeleteUser()
+        {
+            if (SampleObjects._user == null) { CreateUser(); }
+            User testUser = SampleObjects._user;
+
+            string deleteId = testUser != null ? testUser.Id : "5d5aa161cf56d4000de82465";
+            string response = lender.Users.Delete(deleteId);
+            SampleObjects._user = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void A_TestInviteUser()
+        {
+            User user = new User()
+            {
+                Email = RandomString(4, false) + "@test.com",
+                PhoneNumber = RandomNumber(),
+                FirstName = "Fake",
+                LastName = "Person" + RandomString(3, true),
+                Role = "Admin"
+            };
+            try
+            {
+                string response = lender.Users.Invite(user);
+
+                Assert.IsNotNull(response, String.Format("Expected Success message of Invitation, Actual: {0}", response));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
     }
 
     public class SampleObjects
@@ -270,6 +390,7 @@ namespace ReggoraLenderApi.Test
         public static Loan _loan { get; set; }
         public static Order _order { get; set; }
         public static Product _product { get; set; }
+        public static User _user { get; set; }
 
     }
 

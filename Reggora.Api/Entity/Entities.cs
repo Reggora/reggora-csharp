@@ -220,6 +220,7 @@ namespace Reggora.Api.Entity
         public string NmlsId { get => _nmlsId.Value; set => _nmlsId.Value = value; }
         public DateTime? Created { get => _created.Value; set => _created.Value = value; }
         public string Role { get => _role.Value; set => _role.Value = value; }
+        public string Branch { get => _branchId.Value; set => _branchId.Value = value; }
 
         private readonly EntityField<string> _id;
         private readonly EntityField<string> _email;
@@ -229,6 +230,7 @@ namespace Reggora.Api.Entity
         private readonly EntityField<string> _nmlsId;
         private readonly EntityField<DateTime?> _created;
         private readonly EntityField<string> _role;
+        private readonly EntityField<string> _branchId;
 
         public User()
         {
@@ -240,6 +242,7 @@ namespace Reggora.Api.Entity
             BuildField(ref _nmlsId, "string", "nmls_id");
             BuildField(ref _created, "string", "created");
             BuildField(ref _role, "string", "role");
+            BuildField(ref _branchId, "string", "brnach_id");
     }
 }
 }

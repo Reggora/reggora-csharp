@@ -10,6 +10,21 @@ namespace Reggora.Api.Storage.Lender
         public UserStorage(Api.Lender api) : base(api)
         {
         }
+
+        public string Create(User user)
+        {
+            string response = null;
+            var result = new CreateUserRequest(user).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+                user.Clean();
+
+            }
+
+            return response;
+        }
+
         public List<User> All()
         {
             var result = new GetUsersRequest().Execute(Api.Client);
@@ -46,7 +61,7 @@ namespace Reggora.Api.Storage.Lender
             return returned;
         }
 
-        public string InviteUser(User user)
+        public string Invite(User user)
         {
             string response = "";
             var result = new InviteUserRequest(user).Execute(Api.Client);
@@ -87,5 +102,4 @@ namespace Reggora.Api.Storage.Lender
             return response;
         }
     }
-}
 }

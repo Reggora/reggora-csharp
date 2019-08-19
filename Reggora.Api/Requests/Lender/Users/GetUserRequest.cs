@@ -50,10 +50,13 @@ namespace Reggora.Api.Requests.Lender.Users
                 [JsonProperty("role")]
                 public string Role { get; set; }
 
-                [JsonProperty("matched_users")]
-                public List<Matched> MatchedUsers { get; set; }
+                [JsonProperty("brnach_id")]
+                public string BranchId { get; set; }
 
-                public class Matched
+                [JsonProperty("matched_users")]
+                public List<MatchedUser> MatchedUsers { get; set; }
+
+                public class MatchedUser
                 {
                     [JsonProperty("id")]
                     public string Id { get; set; }
