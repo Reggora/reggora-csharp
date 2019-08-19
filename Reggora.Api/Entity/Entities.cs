@@ -75,7 +75,7 @@ namespace Reggora.Api.Entity
         public DateTime? Due { get => _due.Value; set => _due.Value = value; }
         public DateTime? InspectedAt { get => _inspectedAt.Value; set => _inspectedAt.Value = value; }
         public DateTime? Updated { get => _updated.Value; set => _updated.Value = value; }
-        
+
         public bool Inspected { get => _inspected.Value; set => _inspected.Value = value; }
 
         private readonly EntityField<string> _id;
@@ -105,7 +105,7 @@ namespace Reggora.Api.Entity
 
         public static string PriorityTypeToString(PriorityType? value)
         {
-            switch(value)
+            switch (value)
             {
                 case PriorityType.Normal:
                     return "Normal";
@@ -118,7 +118,7 @@ namespace Reggora.Api.Entity
 
         public static PriorityType PriorityTypeFromString(string value)
         {
-            switch(value.ToLowerInvariant())
+            switch (value.ToLowerInvariant())
             {
                 case "normal":
                     return PriorityType.Normal;
@@ -130,7 +130,7 @@ namespace Reggora.Api.Entity
         }
         public static string AllocationModeToString(AllocationMode? value)
         {
-            switch(value)
+            switch (value)
             {
                 case AllocationMode.Automatic:
                     return "automatically";
@@ -143,7 +143,7 @@ namespace Reggora.Api.Entity
 
         public static AllocationMode AllocationModeFromString(string value)
         {
-            switch(value.ToLowerInvariant())
+            switch (value.ToLowerInvariant())
             {
                 case "automatically":
                     return AllocationMode.Automatic;
@@ -210,5 +210,36 @@ namespace Reggora.Api.Entity
             throw new InvalidCastException($"Cannot cast string '{value}' to '{typeof(Inspection)}'!");
         }
     }
+    public class User : Entity
+    {
+        public string Id { get => _id.Value; set => _id.Value = value; }
+        public string Email { get => _email.Value; set => _email.Value = value; }
+        public string PhoneNumber { get => _phoneNumber.Value; set => _phoneNumber.Value = value; }
+        public string FirstName { get => _firstName.Value; set => _firstName.Value = value; }
+        public string LastName { get => _lastName.Value; set => _lastName.Value = value; }
+        public string NmlsId { get => _nmlsId.Value; set => _nmlsId.Value = value; }
+        public DateTime? Created { get => _created.Value; set => _created.Value = value; }
+        public string Role { get => _role.Value; set => _role.Value = value; }
 
+        private readonly EntityField<string> _id;
+        private readonly EntityField<string> _email;
+        private readonly EntityField<string> _phoneNumber;
+        private readonly EntityField<string> _firstName;
+        private readonly EntityField<string> _lastName;
+        private readonly EntityField<string> _nmlsId;
+        private readonly EntityField<DateTime?> _created;
+        private readonly EntityField<string> _role;
+
+        public User()
+        {
+            BuildField(ref _id, "id");
+            BuildField(ref _email, "email");
+            BuildField(ref _phoneNumber, "phone_number");
+            BuildField(ref _firstName, "string", "firstname");
+            BuildField(ref _lastName, "string", "lastname");
+            BuildField(ref _nmlsId, "string", "nmls_id");
+            BuildField(ref _created, "string", "created");
+            BuildField(ref _role, "string", "role");
+    }
+}
 }

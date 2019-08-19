@@ -1,12 +1,12 @@
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
+using Reggora.Api.Entity;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Users
 {
-    public class InviteUserRequest : RestRequest
+    public class InviteUserRequest : ReggoraRequest
     {
-        public InviteUserRequest(User user) : base("lender/users", Method.POST)
+        public InviteUserRequest(User user) : base("lender/users/invite", Method.POST)
         {
             AddJsonBody(new Request
             {

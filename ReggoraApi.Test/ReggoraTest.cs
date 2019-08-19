@@ -105,15 +105,15 @@ namespace ReggoraLenderApi.Test
             Loan testLoan = SampleObjects._loan;
             
             string newLoanNumber = RandomString(7, false);
-            
-            Loan newLoan = new Loan(){ Id = testLoan.Id, Number = newLoanNumber};
+
+            testLoan.Number = newLoanNumber;
             try
             {
-                string updatedLoanId = lender.Loans.Edit(newLoan);
-                newLoan = lender.Loans.Get(updatedLoanId);
+                string updatedLoanId = lender.Loans.Edit(testLoan);
+                testLoan = lender.Loans.Get(updatedLoanId);
                
-                Assert.AreEqual(newLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
-                                     newLoanNumber, newLoan.Number));
+                Assert.AreEqual(testLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
+                                     newLoanNumber, testLoan.Number));
                 SampleObjects._loan = testLoan;
             }
             catch (Exception e)
@@ -227,6 +227,42 @@ namespace ReggoraLenderApi.Test
                                      expectedId, product.Id));
         }
 
+        [TestMethod]
+        public void D_TestEditProduct()
+        {
+            if (SampleObjects._product == null) { CreateProduct(); }
+            Product testProduct = SampleObjects._product;
+
+            string newProductName = RandomString(7, false);
+
+            testProduct.ProductName = newProductName;
+            try
+            {
+                string updatedProductId = lender.Products.Edit(testProduct);
+                testProduct = lender.Products.Get(updatedProductId);
+
+                Assert.AreEqual(testProduct.ProductName, newProductName, String.Format("Expected Product Name:'{0}'; Actual Product Name: {1}",
+                                     newProductName, testProduct.ProductName));
+                SampleObjects._product = testProduct;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void E_TestDeleteProduct()
+        {
+            if (SampleObjects._product == null) { CreateProduct(); }
+            Product testProduct = SampleObjects._product;
+
+            string deleteId = testProduct != null ? testProduct.Id : "5d4bd10434e305000c322368";
+            string response = lender.Products.Delete(deleteId);
+            SampleObjects._product = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
+        }
     }
 
     public class SampleObjects
