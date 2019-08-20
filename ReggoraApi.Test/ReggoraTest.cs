@@ -118,10 +118,10 @@ namespace ReggoraLenderApi.Test
             {
                 string updatedLoanId = lender.Loans.Edit(testLoan);
                 testLoan = lender.Loans.Get(updatedLoanId);
-               
+                SampleObjects._loan = testLoan;
                 Assert.AreEqual(testLoan.Number, newLoanNumber, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
                                      newLoanNumber, testLoan.Number));
-                SampleObjects._loan = testLoan;
+               
             }
             catch (Exception e)
             {
@@ -247,10 +247,10 @@ namespace ReggoraLenderApi.Test
             {
                 string updatedProductId = lender.Products.Edit(testProduct);
                 testProduct = lender.Products.Get(updatedProductId);
-
+                SampleObjects._product = testProduct;
                 Assert.AreEqual(testProduct.ProductName, newProductName, String.Format("Expected Product Name:'{0}'; Actual Product Name: {1}",
                                      newProductName, testProduct.ProductName));
-                SampleObjects._product = testProduct;
+                
             }
             catch (Exception e)
             {
@@ -338,9 +338,10 @@ namespace ReggoraLenderApi.Test
                 string updatedUserId = lender.Users.Edit(testUser);
                 testUser = lender.Users.Get(updatedUserId);
 
+                SampleObjects._user = testUser;
                 Assert.AreEqual(testUser.PhoneNumber, newPhoneNumber, String.Format("Expected User Phone Number:'{0}'; Actual Phone Number: {1}",
                                      newPhoneNumber, testUser.PhoneNumber));
-                SampleObjects._user = testUser;
+                
             }
             catch (Exception e)
             {
@@ -392,7 +393,7 @@ namespace ReggoraLenderApi.Test
             {
                 FirmName = "Appraisal Firm" + RandomNumber(1000, 10000),
                 Email = "vendor_" + RandomString(4, true) + "@test.com",
-                PhoneNumber = RandomNumber(),
+                Phone = RandomNumber(),
                 FirstName = "Fake",
                 LastName = "Vendor" + RandomString(3, true)
             };
@@ -438,7 +439,7 @@ namespace ReggoraLenderApi.Test
         [TestMethod]
         public void B_TestGetVendorsByZones()
         {
-            List<string> zones = new List<string> { "02806", "02807", "03102" };
+            List<string> zones = new List<string> {};
             var vendors = lender.Vendors.GetByZone(zones);
             Assert.IsInstanceOfType(vendors, typeof(List<Vendr>));
         }
@@ -457,17 +458,18 @@ namespace ReggoraLenderApi.Test
             if (SampleObjects._vendor == null) { CreateVendor(); }
             Vendr testVendor = SampleObjects._vendor;
 
-            string newPhoneNumber = RandomNumber();
+            string newPhone = RandomNumber();
 
-            testVendor.PhoneNumber = newPhoneNumber;
+            testVendor.Phone = newPhone;
             try
             {
                 string updatedVendorId = lender.Vendors.Edit(testVendor);
                 testVendor = lender.Vendors.Get(updatedVendorId);
 
-                Assert.AreEqual(testVendor.PhoneNumber, newPhoneNumber, String.Format("Expected Phone number:'{0}'; Actual Phone number: {1}",
-                                     newPhoneNumber, testVendor.PhoneNumber));
                 SampleObjects._vendor = testVendor;
+                Assert.AreEqual(testVendor.Phone, newPhone, String.Format("Expected Phone number:'{0}'; Actual Phone number: {1}",
+                                     newPhone, testVendor.Phone));
+                
             }
             catch (Exception e)
             {

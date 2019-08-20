@@ -76,7 +76,7 @@ namespace Reggora.Api.Requests.Lender.Orders
                     public string Id { get; set; }
 
                     [JsonProperty("firm_name")]
-                    public string Name { get; set; }
+                    public string FirmName { get; set; }
 
                     [JsonProperty("accepting_jobs")]
                     public bool AcceptingJobs { get; set; }

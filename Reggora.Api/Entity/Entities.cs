@@ -251,16 +251,20 @@ namespace Reggora.Api.Entity
         public string Id { get => _id.Value; set => _id.Value = value; }
         public string FirmName { get => _firmName.Value; set => _firmName.Value = value; }
         public string Email { get => _email.Value; set => _email.Value = value; }
-        public string PhoneNumber { get => _phoneNumber.Value; set => _phoneNumber.Value = value; }
+        public string Phone { get => _phone.Value; set => _phone.Value = value; }
         public string FirstName { get => _firstName.Value; set => _firstName.Value = value; }
         public string LastName { get => _lastName.Value; set => _lastName.Value = value; }
+        public string Name { get => _name.Value; set => _name.Value = value; }
+        public bool AcceptingJobs { get => _acceptingJobs.Value; set => _acceptingJobs.Value = value; }
 
         private readonly EntityField<string> _id;
         private readonly EntityField<string> _firmName;
         private readonly EntityField<string> _email;
-        private readonly EntityField<string> _phoneNumber;
+        private readonly EntityField<string> _phone;
         private readonly EntityField<string> _firstName;
         private readonly EntityField<string> _lastName;
+        private readonly EntityField<string> _name;
+        private readonly EntityField<bool> _acceptingJobs;
 
         public Vendr()
         {
@@ -268,9 +272,11 @@ namespace Reggora.Api.Entity
             BuildField(ref _id, "id");
             BuildField(ref _firmName, "firm_name");
             BuildField(ref _email, "email");
-            BuildField(ref _phoneNumber, "phone_number");
+            BuildField(ref _phone, "phone");
             BuildField(ref _firstName,  "firstname");
             BuildField(ref _lastName, "lastname");
+            BuildField(ref _name, "name");
+            BuildField(ref _acceptingJobs, "accepting_jobs");
         }
     }
 }

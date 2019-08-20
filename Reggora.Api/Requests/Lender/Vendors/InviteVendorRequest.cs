@@ -14,7 +14,7 @@ namespace Reggora.Api.Requests.Lender.Vendors
                 FirstName = vendor.FirstName,
                 LastName = vendor.LastName,
                 Email = vendor.Email,
-                PhoneNumber = vendor.PhoneNumber
+                Phone = vendor.Phone
             });
         }
 
@@ -33,7 +33,7 @@ namespace Reggora.Api.Requests.Lender.Vendors
             public string Email { get; set; }
 
             [JsonProperty("phone")]
-            public string PhoneNumber { get; set; }
+            public string Phone { get; set; }
         }
 
         public class Response

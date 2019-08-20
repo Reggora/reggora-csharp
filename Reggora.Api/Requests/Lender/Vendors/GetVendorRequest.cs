@@ -38,11 +38,21 @@ namespace Reggora.Api.Requests.Lender.Vendors
                 [JsonProperty("firm_name")]
                 public string FirmName { get; set; }
 
+
+                [JsonProperty("name")]
+                public string Name { get; set; }
+
+                [JsonProperty("firstname")]
+                public string FirstName { get; set; }
+
+                [JsonProperty("lastname")]
+                public string LastName { get; set; }
+
                 [JsonProperty("email")]
                 public string Email { get; set; }
 
                 [JsonProperty("phone")]
-                public string PhoneNumber { get; set; }
+                public string Phone { get; set; }
 
                 [JsonProperty("accepting_jobs")]
                 public bool AcceptingJobs { get; set; }
