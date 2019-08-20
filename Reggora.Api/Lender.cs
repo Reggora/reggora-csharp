@@ -9,6 +9,7 @@ namespace Reggora.Api
         public readonly OrderStorage Orders;
         public readonly ProductStorage Products;
         public readonly UserStorage Users;
+        public readonly VendorStorage Vendors;
 
         public Lender(string integrationToken) : base(integrationToken)
         {
@@ -16,6 +17,7 @@ namespace Reggora.Api
             Orders = new OrderStorage(this);
             Products = new ProductStorage(this);
             Users = new UserStorage(this);
+            Vendors = new VendorStorage(this);
         }
 
         public override Lender Authenticate(string email, string password)

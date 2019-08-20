@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Vendors
 {
-    public class GetVendorsByZoneRequest : RestRequest
+    public class GetVendorsByZoneRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -15,16 +15,21 @@ namespace Reggora.Api.Requests.Lender.Vendors
         public uint Limit = 0;
         public Ordering Order = Ordering.Created;
 
-        public GetVendorsByZoneRequest(List<string> zones) : base("lender/vendor/by_zone", Method.GET)
+        public GetVendorsByZoneRequest(List<string> zones) : base("lender/vendors/by_zone", Method.POST)
         {
-            AddParameter("offset", Offset, ParameterType.RequestBody);
-            AddParameter("limit", Limit, ParameterType.RequestBody);
-            AddParameter("order", OrderingToString(), ParameterType.RequestBody);
+            AddParameter("offset", Offset, ParameterType.QueryString);
+            AddParameter("limit", Limit, ParameterType.QueryString);
+            AddParameter("order", OrderingToString(),  ParameterType.QueryString);
 
             AddJsonBody(new Request
             {
                 Zones = zones
             });
+        }
+
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
         }
 
         private string OrderingToString()
@@ -37,6 +42,7 @@ namespace Reggora.Api.Requests.Lender.Vendors
 
             return "";
         }
+
 
         public class Request
         {

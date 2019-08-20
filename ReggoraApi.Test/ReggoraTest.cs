@@ -276,7 +276,7 @@ namespace ReggoraLenderApi.Test
         {
             User user = new User()
             {
-                Email = RandomString(4, false) + "@test.com",
+                Email = RandomString(4, true) + "@test.com",
                 PhoneNumber = RandomNumber(),
                 FirstName = "Fake",
                 LastName = "Person" + RandomString(3, true),
@@ -383,6 +383,111 @@ namespace ReggoraLenderApi.Test
                 throw new Exception(e.ToString());
             }
         }
+
+
+        //Test Vendor Requests
+        public string CreateVendor()
+        {
+            Vendr vendor = new Vendr()
+            {
+                FirmName = "Appraisal Firm" + RandomNumber(1000, 10000),
+                Email = "vendor_" + RandomString(4, true) + "@test.com",
+                PhoneNumber = RandomNumber(),
+                FirstName = "Fake",
+                LastName = "Vendor" + RandomString(3, true)
+            };
+            try
+            {
+                string createdVendorId = lender.Vendors.Create(vendor);
+                SampleObjects._vendor = lender.Vendors.Get(createdVendorId);
+                return createdVendorId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void A_TestCreateVendor()
+        {
+            Console.WriteLine("Testing Vendor Requests...");
+            string createdVendorId = CreateVendor();
+
+            Assert.IsNotNull(createdVendorId, "Expected an ID of new Vendor");
+        }
+
+        [TestMethod]
+        public void B_TestGetVendors()
+        {
+            var vendors = lender.Vendors.All();
+            Assert.IsInstanceOfType(vendors, typeof(List<Vendr>));
+        }
+
+        [TestMethod]
+        public void C_TestGetVendor()
+        {
+            if (SampleObjects._vendor == null) { CreateVendor(); }
+            Vendr testVendor = SampleObjects._vendor;
+            string expectedId = testVendor != null ? testVendor.Id : "5d5b714c586cbb000d3eecb5";
+            Vendr vendor = lender.Vendors.Get(expectedId);
+            Assert.AreEqual(expectedId, vendor.Id, String.Format("Tried to get vendor by ID:'{0}'; Actual ID of vendor: {1}",
+                                     expectedId, vendor.Id));
+        }
+
+        [TestMethod]
+        public void B_TestGetVendorsByZones()
+        {
+            List<string> zones = new List<string> { "02806", "02807", "03102" };
+            var vendors = lender.Vendors.GetByZone(zones);
+            Assert.IsInstanceOfType(vendors, typeof(List<Vendr>));
+        }
+
+        [TestMethod]
+        public void B_TestGetVendorsByBranch()
+        {
+            string branchId = "5b58c8861e5f59000d4542af";
+            var vendors = lender.Vendors.GetByBranch(branchId);
+            Assert.IsInstanceOfType(vendors, typeof(List<Vendr>));
+        }
+
+        [TestMethod]
+        public void D_TestEditVendor()
+        {
+            if (SampleObjects._vendor == null) { CreateVendor(); }
+            Vendr testVendor = SampleObjects._vendor;
+
+            string newPhoneNumber = RandomNumber();
+
+            testVendor.PhoneNumber = newPhoneNumber;
+            try
+            {
+                string updatedVendorId = lender.Vendors.Edit(testVendor);
+                testVendor = lender.Vendors.Get(updatedVendorId);
+
+                Assert.AreEqual(testVendor.PhoneNumber, newPhoneNumber, String.Format("Expected Phone number:'{0}'; Actual Phone number: {1}",
+                                     newPhoneNumber, testVendor.PhoneNumber));
+                SampleObjects._vendor = testVendor;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void E_TestDeleteVendor()
+        {
+            if (SampleObjects._vendor == null) { CreateVendor(); }
+            Vendr testVendor = SampleObjects._vendor;
+
+            string deleteId = testVendor != null ? testVendor.Id : "5d5b714c586cbb000d3eecb5";
+            string response = lender.Vendors.Delete(deleteId);
+            SampleObjects._vendor = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
+        }
+
     }
 
     public class SampleObjects
@@ -391,6 +496,7 @@ namespace ReggoraLenderApi.Test
         public static Order _order { get; set; }
         public static Product _product { get; set; }
         public static User _user { get; set; }
+        public static Vendr _vendor { get; set; }
 
     }
 

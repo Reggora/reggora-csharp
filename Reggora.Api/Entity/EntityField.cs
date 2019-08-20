@@ -93,6 +93,7 @@ namespace Reggora.Api.Entity
                 {
                     return Product.InspectionToString(value);
                 }
+
             }
 
             return value;

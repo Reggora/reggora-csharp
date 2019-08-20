@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Vendors
 {
-    public class GetVendorsByBranchRequest : RestRequest
+    public class GetVendorsByBranchRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -15,7 +15,7 @@ namespace Reggora.Api.Requests.Lender.Vendors
         public uint Limit = 0;
         public Ordering Order = Ordering.Created;
 
-        public GetVendorsByBranchRequest(string branchId) : base("lender/vendor/branch", Method.GET)
+        public GetVendorsByBranchRequest(string branchId) : base("lender/vendors/branch", Method.GET)
         {
             AddParameter("branch_id", branchId, ParameterType.QueryString);
             AddParameter("offset", Offset, ParameterType.QueryString);
@@ -32,6 +32,11 @@ namespace Reggora.Api.Requests.Lender.Vendors
             }
 
             return "";
+        }
+
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
         }
 
         public class Response

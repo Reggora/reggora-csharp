@@ -243,6 +243,34 @@ namespace Reggora.Api.Entity
             BuildField(ref _created, "string", "created");
             BuildField(ref _role, "string", "role");
             BuildField(ref _branchId, "string", "brnach_id");
+        }
     }
-}
+
+    public class Vendr : Entity
+    {
+        public string Id { get => _id.Value; set => _id.Value = value; }
+        public string FirmName { get => _firmName.Value; set => _firmName.Value = value; }
+        public string Email { get => _email.Value; set => _email.Value = value; }
+        public string PhoneNumber { get => _phoneNumber.Value; set => _phoneNumber.Value = value; }
+        public string FirstName { get => _firstName.Value; set => _firstName.Value = value; }
+        public string LastName { get => _lastName.Value; set => _lastName.Value = value; }
+
+        private readonly EntityField<string> _id;
+        private readonly EntityField<string> _firmName;
+        private readonly EntityField<string> _email;
+        private readonly EntityField<string> _phoneNumber;
+        private readonly EntityField<string> _firstName;
+        private readonly EntityField<string> _lastName;
+
+        public Vendr()
+        {
+
+            BuildField(ref _id, "id");
+            BuildField(ref _firmName, "firm_name");
+            BuildField(ref _email, "email");
+            BuildField(ref _phoneNumber, "phone_number");
+            BuildField(ref _firstName,  "firstname");
+            BuildField(ref _lastName, "lastname");
+        }
+    }
 }

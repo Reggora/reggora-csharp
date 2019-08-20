@@ -30,10 +30,4 @@
     <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Reggora.Api">
-      <HintPath>..\Reggora.Api\bin\Debug\netcoreapp2.2\Reggora.Api.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

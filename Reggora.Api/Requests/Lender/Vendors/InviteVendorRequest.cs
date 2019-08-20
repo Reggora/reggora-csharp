@@ -1,19 +1,20 @@
 using Newtonsoft.Json;
 using RestSharp;
+using Reggora.Api.Entity;
 
 namespace Reggora.Api.Requests.Lender.Vendors
 {
-    public class InviteVendorRequest : RestRequest
+    public class InviteVendorRequest : ReggoraRequest
     {
-        public InviteVendorRequest(Models.Vendor vendor) : base("lender/vendor", Method.POST)
+        public InviteVendorRequest(Vendr vendor) : base("lender/vendors", Method.POST)
         {
             AddJsonBody(new Request
             {
                 FirmName = vendor.FirmName,
-                FirstName = "",
-                LastName = "",
+                FirstName = vendor.FirstName,
+                LastName = vendor.LastName,
                 Email = vendor.Email,
-                Phone = vendor.Phone
+                PhoneNumber = vendor.PhoneNumber
             });
         }
 
@@ -32,7 +33,7 @@ namespace Reggora.Api.Requests.Lender.Vendors
             public string Email { get; set; }
 
             [JsonProperty("phone")]
-            public string Phone { get; set; }
+            public string PhoneNumber { get; set; }
         }
 
         public class Response

@@ -18,9 +18,9 @@ namespace Reggora.Api.Requests.Lender.Users
 
         public GetUsersRequest() : base("lender/users", Method.GET)
         {
-            AddParameter("offset", Offset, ParameterType.RequestBody);
-            AddParameter("limit", Limit, ParameterType.RequestBody);
-            AddParameter("order", OrderingToString(), ParameterType.RequestBody);
+            AddParameter("offset", Offset, ParameterType.QueryString);
+            AddParameter("limit", Limit, ParameterType.QueryString);
+            AddParameter("order", OrderingToString(), ParameterType.QueryString);
         }
 
         private string OrderingToString()
