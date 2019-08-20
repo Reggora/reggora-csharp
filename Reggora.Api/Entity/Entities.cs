@@ -2,6 +2,7 @@
 // WARNING: T4 GENERATED CODE - DO NOT EDIT
 //
 
+using Reggora.Api.Requests.Lender.Orders;
 using System;
 using System.Collections.Generic;
 
@@ -66,15 +67,21 @@ namespace Reggora.Api.Entity
             Manual,
         }
 
+
         public string Id { get => _id.Value; set => _id.Value = value; }
         public string Status { get => _status.Value; set => _status.Value = value; }
         public AllocationMode Allocation { get => _allocation.Value; set => _allocation.Value = value; }
         public string Loan { get => _loan.Value; set => _loan.Value = value; }
+        public GetOrderRequest.Response.Order.Loan LoanFile { get => _loanFile.Value; set => _loanFile.Value = value; }
         public PriorityType? Priority { get => _priority.Value; set => _priority.Value = value; }
-        public string[] Products { get => _products.Value; set => _products.Value = value; }
+        public List<string> ProductIds { get => _productIds.Value; set => _productIds.Value = value; }
+        public List<GetOrderRequest.Response.Order.Product> Products { get => _products.Value; set => _products.Value = value; }
         public DateTime? Due { get => _due.Value; set => _due.Value = value; }
         public DateTime? InspectedAt { get => _inspectedAt.Value; set => _inspectedAt.Value = value; }
-        public DateTime? Updated { get => _updated.Value; set => _updated.Value = value; }
+        public DateTime? Created { get => _created.Value; set => _created.Value = value; }
+        public Vendr AcceptedVendor { get => _acceptedVendor.Value; set => _acceptedVendor.Value = value; }
+        public string Evault { get => _evault.Value; set => _evault.Value = value; }
+        public List<CreateOrderRequest.Request.AdditionalFee> AdditionalFees { get => _additionalFees.Value; set => _additionalFees.Value = value; }
 
         public bool Inspected { get => _inspected.Value; set => _inspected.Value = value; }
 
@@ -82,12 +89,17 @@ namespace Reggora.Api.Entity
         private readonly EntityField<string> _status;
         private readonly EntityField<AllocationMode> _allocation;
         private readonly EntityField<string> _loan;
+        private readonly EntityField<GetOrderRequest.Response.Order.Loan> _loanFile;
         private readonly EntityField<PriorityType?> _priority;
-        private readonly EntityField<string[]> _products;
+        private readonly EntityField<List<string>> _productIds;
+        private readonly EntityField<List<GetOrderRequest.Response.Order.Product>> _products;
         private readonly EntityField<DateTime?> _due;
         private readonly EntityField<DateTime?> _inspectedAt;
-        private readonly EntityField<DateTime?> _updated;
+        private readonly EntityField<DateTime?> _created;
         private readonly EntityField<bool> _inspected;
+        private readonly EntityField<Vendr> _acceptedVendor;
+        private readonly EntityField<string> _evault;
+        private readonly EntityField<List<CreateOrderRequest.Request.AdditionalFee>> _additionalFees;
 
         public Order()
         {
@@ -95,12 +107,17 @@ namespace Reggora.Api.Entity
             BuildField(ref _status, "status");
             BuildField(ref _allocation, "string", "allocation_type");
             BuildField(ref _loan, "loan");
+            BuildField(ref _loanFile, "loan_file");
             BuildField(ref _priority, "string", "priority");
-            BuildField(ref _products, "string[]", "products");
+            BuildField(ref _productIds, "product_ids");
+            BuildField(ref _products, "products");
             BuildField(ref _due, "string", "due_date");
-            BuildField(ref _inspectedAt, "string", "inspected_at");
-            BuildField(ref _updated, "string", "updated");
+            BuildField(ref _inspectedAt, "string", "inspection_date");
+            BuildField(ref _created, "string", "created");
             BuildField(ref _inspected, "inspection_complete");
+            BuildField(ref _acceptedVendor, "accepted_vendor");
+            BuildField(ref _evault, "evault");
+            BuildField(ref _additionalFees, "additional_fees");
         }
 
         public static string PriorityTypeToString(PriorityType? value)

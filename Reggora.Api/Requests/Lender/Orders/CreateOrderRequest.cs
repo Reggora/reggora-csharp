@@ -15,19 +15,18 @@ namespace Reggora.Api.Requests.Lender.Orders
             {
                 Allocation = Order.AllocationModeToString(order.Allocation),
                 Loan = order.Loan,
-                Products = order.Products,
+                Products = order.ProductIds,
                 Priority = Order.PriorityTypeToString(order.Priority),
-                DueDate = Utils.DateToString(order.Due)
+                DueDate = Utils.DateToString(order.Due),
+                AdditionalFees = order.AdditionalFees ?? new List<Request.AdditionalFee>()
             });
+
         }
 
         public class Request
         {
             [JsonProperty("allocation_type")]
             public string Allocation { get; set; }
-
-            [JsonProperty("vendors")]
-            public List<string> Vendors { get; set; }
 
             [JsonProperty("loan")]
             public string Loan { get; set; }
@@ -36,7 +35,7 @@ namespace Reggora.Api.Requests.Lender.Orders
             public string Priority { get; set; }
 
             [JsonProperty("products")]
-            public string[] Products { get; set; }
+            public List<string> Products { get; set; }
 
             [JsonProperty("due_date")]
             public string DueDate { get; set; }
