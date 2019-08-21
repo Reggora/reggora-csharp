@@ -172,6 +172,29 @@ namespace Reggora.Api.Entity
         }
 
     }
+
+    public class Submission : Entity
+    {
+       
+        public string Version { get => _version.Value; set => _version.Value = value; }
+        public string PdfReport { get => _pdfReport.Value; set => _pdfReport.Value = value; }
+        public string XmlReport { get => _xmlReport.Value; set => _xmlReport.Value = value; }
+        public string Invoice { get => _invoice.Value; set => _invoice.Value = value; }
+
+        private readonly EntityField<string> _version;
+        private readonly EntityField<string> _pdfReport;
+        private readonly EntityField<string> _xmlReport;
+        private readonly EntityField<string> _invoice;
+
+        public Submission()
+        {
+            BuildField(ref _version, "version");
+            BuildField(ref _pdfReport, "pdf_report");
+            BuildField(ref _xmlReport, "xml_eport");
+            BuildField(ref _invoice, "invoice");
+        }
+    }
+
     public class Product : Entity
     {
         public enum Inspection

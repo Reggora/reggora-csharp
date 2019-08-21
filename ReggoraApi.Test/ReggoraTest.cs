@@ -178,13 +178,83 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetOrder()
+        public void B_TestGetOrders()
+        {
+            var orders = lender.Orders.All();
+            Assert.IsInstanceOfType(orders, typeof(List<Order>));
+        }
+
+        [TestMethod]
+        public void C_TestGetOrder()
         {
             Console.WriteLine("Testing Get a Loan...");
             string expectedId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
             Order order = lender.Orders.Get(expectedId);
             Assert.AreEqual(expectedId, order.Id, String.Format("Tried to get order by ID:'{0}'; Actual ID of order: {1}",
                                      expectedId, order.Id));
+        }
+
+        [TestMethod]
+        public void D_TestEditOrder()
+        {
+            CreateOrder();
+            Order testOrder = SampleObjects._order;
+
+            DateTime newDueDate = DateTime.Now.AddYears(1);
+
+            testOrder.Due = newDueDate;
+            try
+            {
+                string updatedOrderId = lender.Orders.Edit(testOrder);
+                testOrder = lender.Orders.Get(updatedOrderId);
+                SampleObjects._order = testOrder;
+                Assert.AreEqual(testOrder.Due, newDueDate, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
+                                     newDueDate.ToString(), testOrder.Due.ToString()));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void E_TestCancelOrder()
+        {
+            string cancelId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string response = lender.Orders.Cancel(cancelId);
+            SampleObjects._order = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void F_TestPlacelOrderOnHold()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string reason = "I'd like to wait to start this order.";
+            string response = lender.Orders.OnHold(orderId, reason);
+            SampleObjects._order = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Placing Order On Hold, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void G_RemoveOrderHold()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string response = lender.Orders.RemoveHold(orderId);
+            SampleObjects._order = null;
+            Assert.IsNotNull(response, String.Format("Expected Success message of Removing Order Hold, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void H_TestGetSubmissions()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            var submissions = lender.Orders.Submissions(orderId);
+            Assert.IsInstanceOfType(submissions, typeof(List<Submission>));
         }
 
         //Test Product Requests
