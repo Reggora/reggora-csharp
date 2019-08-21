@@ -55,10 +55,15 @@ namespace Reggora.Api.Entity
                 {
                     return Order.AllocationModeFromString(value);
                 }
-                
+
                 if (typeof(T) == typeof(Order.PriorityType) || typeof(T) == typeof(Order.PriorityType?))
                 {
                     return Order.PriorityTypeFromString(value);
+                }
+
+                if (typeof(T) == typeof(Product.Inspection) || typeof(T) == typeof(Product.Inspection?))
+                {
+                    return Product.InspectionFromString(value);
                 }
             }
 
@@ -73,7 +78,7 @@ namespace Reggora.Api.Entity
                 {
                     return Utils.DateToString(value);
                 }
-                
+
                 if (typeof(T) == typeof(Order.AllocationMode) || typeof(T) == typeof(Order.AllocationMode?))
                 {
                     return Order.AllocationModeToString(value);
@@ -83,6 +88,12 @@ namespace Reggora.Api.Entity
                 {
                     return Order.PriorityTypeToString(value);
                 }
+
+                if (typeof(T) == typeof(Product.Inspection) || typeof(T) == typeof(Product.Inspection?))
+                {
+                    return Product.InspectionToString(value);
+                }
+
             }
 
             return value;

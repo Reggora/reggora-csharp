@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Loans;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
@@ -67,8 +66,29 @@ namespace Reggora.Api.Requests.Lender.Orders
                 public List<Product> Products { get; set; }
 
                 [JsonProperty("loan_file")]
-                public GetLoanRequest.Response.Loan LoanFile { get; set; }
+                public Loan LoanFile { get; set; }
 
+                public class Loan
+                {
+                    [JsonProperty("id")]
+                    public string Id { get; set; }
+
+                    [JsonProperty("loan_number")]
+                    public string LoanNumber { get; set; }
+
+                    [JsonProperty("subject_property_address")]
+                    public string SubjectPropertyAddress { get; set; }
+
+                    [JsonProperty("subject_property_city")]
+                    public string SubjectPropertyCity { get; set; }
+
+                    [JsonProperty("subject_property_state")]
+                    public string SubjectPropertyState { get; set; }
+
+                    [JsonProperty("subject_property_zip")]
+                    public string SubjectPropertyZip { get; set; }
+
+                }
 
                 public class Vendor
                 {
@@ -76,13 +96,19 @@ namespace Reggora.Api.Requests.Lender.Orders
                     public string Id { get; set; }
 
                     [JsonProperty("firm_name")]
-                    public string Name { get; set; }
+                    public string FirmName { get; set; }
 
                     [JsonProperty("accepting_jobs")]
                     public bool AcceptingJobs { get; set; }
 
-                    [JsonProperty("company")]
-                    public string Company { get; set; }
+                    [JsonProperty("email")]
+                    public string Email { get; set; }
+
+                    [JsonProperty("name")]
+                    public string Name { get; set; }
+
+                    [JsonProperty("phone")]
+                    public string Phone { get; set; }
                 }
 
                 public class Product
@@ -91,7 +117,7 @@ namespace Reggora.Api.Requests.Lender.Orders
                     public string Id { get; set; }
 
                     [JsonProperty("product_name")]
-                    public string Name { get; set; }
+                    public string ProductName { get; set; }
 
                     [JsonProperty("amount")]
                     public string Amount { get; set; }

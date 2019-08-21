@@ -1,11 +1,12 @@
+﻿using System;
 using Reggora.Api.Entity;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
 {
-    public class CancelOrderRequest : ReggoraRequest
+    class RemoveOrderHoldRequest : ReggoraRequest
     {
-        public CancelOrderRequest(string orderId) : base("lender/order/{order_id}/cancel", Method.DELETE)
+        public RemoveOrderHoldRequest(string orderId) : base("lender/order/{order_id}/unhold", Method.PUT)
         {
             AddParameter("order_id", orderId, ParameterType.UrlSegment);
         }

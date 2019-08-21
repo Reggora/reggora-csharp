@@ -1,14 +1,18 @@
 using Newtonsoft.Json;
-using Reggora.Api.Requests.Lender.Models;
+using Reggora.Api.Entity;
 using RestSharp;
+using Reggora.Api.Util;
+using RestSharp.Serializers.Newtonsoft.Json;
 
 namespace Reggora.Api.Requests.Lender.Products
 {
-    public class EditProductRequest : RestRequest
+    public class EditProductRequest : ReggoraRequest
     {
         public EditProductRequest(Product product) : base("lender/product/{product_id}", Method.PUT)
         {
+
             AddParameter("product_id", product.Id, ParameterType.UrlSegment);
+
             AddJsonBody(new CreateProductRequest.Request
             {
                 Name = product.ProductName,
@@ -18,13 +22,5 @@ namespace Reggora.Api.Requests.Lender.Products
             });
         }
 
-        public class Response
-        {
-            [JsonProperty("data")]
-            public string Data { get; set; }
-
-            [JsonProperty("status")]
-            public int Status { get; set; }
-        }
     }
 }

@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Vendors
 {
-    public class DeleteVendorRequest : RestRequest
+    public class DeleteVendorRequest : ReggoraRequest
     {
         public DeleteVendorRequest(string vendorId) : base("lender/vendor/{vendor_id}", Method.DELETE)
         {

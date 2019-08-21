@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -7,17 +7,15 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Users
 {
-    public class EditUserRequest : ReggoraRequest
+    public class CreateUserRequest : ReggoraRequest
     {
-        public EditUserRequest(User user) : base("lender/users/{user_id}", Method.PUT)
+        public CreateUserRequest(User user) : base("lender/users", Method.POST)
         {
-            AddParameter("user_id", user.Id, ParameterType.UrlSegment);
-
             AddJsonBody(new Request
             {
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.FirstName,
+                LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
                 Branch = user.Branch,
                 Role = user.Role,
@@ -47,7 +45,6 @@ namespace Reggora.Api.Requests.Lender.Users
 
             [JsonProperty("nmls_id")]
             public string Nmls { get; set; }
-
         }
     }
 }

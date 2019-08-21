@@ -41,10 +41,16 @@ namespace Reggora.Api.Requests.Lender.Orders
         public class Response
         {
             [JsonProperty("data")]
-            public List<GetOrderRequest.Response.Order> Data { get; set; }
+            public NestedOrders Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
+            public class NestedOrders
+            {
+                [JsonProperty("orders")]
+                public List<GetOrderRequest.Response.Order> Orders { get; set; }
+            }
         }
     }
 }

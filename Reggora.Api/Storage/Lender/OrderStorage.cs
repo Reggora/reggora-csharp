@@ -1,6 +1,7 @@
 using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Orders;
 using Reggora.Api.Util;
+using System.Collections.Generic;
 
 namespace Reggora.Api.Storage.Lender
 {
@@ -8,6 +9,24 @@ namespace Reggora.Api.Storage.Lender
     {
         public OrderStorage(Api.Lender api) : base(api)
         {
+        }
+
+        public List<Order> All()
+        {
+            var result = new GetOrdersRequest().Execute(Api.Client);
+            var fetchedOrders = result.Data.Orders;
+            List<Order> orders = new List<Order>();
+
+            if (result.Status == 200)
+            {
+                for (int i = 0; i < fetchedOrders.Count; i++)
+                {
+                    Order tempOrder = new Order();
+                    tempOrder.UpdateFromRequest(Utils.DictionaryOfJsonFields(fetchedOrders[i]));
+                    orders.Add(tempOrder);
+                }
+            }
+            return orders;
         }
 
         public override Order Get(string id)
@@ -41,6 +60,83 @@ namespace Reggora.Api.Storage.Lender
         public override void Save(Order order)
         {
             Save(order, false);
+        }
+
+        public string Create(Order order)
+        {
+            string response = null;
+            var result = new CreateOrderRequest(order).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+                order.Clean();
+
+            }
+
+            return response;
+        }
+
+        public string Edit(Order order)
+        {
+            string response = "";
+            var result = new EditOrderRequest(order, false).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+                order.Clean();
+            }
+            return response;
+        }
+
+        public string Cancel(string orderId)
+        {
+            string response = null;
+            var result = new CancelOrderRequest(orderId).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+            }
+            return response;
+        }
+
+        public string OnHold(string orderId, string reason)
+        {
+            string response = null;
+            var result = new PlaceOrderOnHoldRequest(orderId, reason).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+            }
+            return response;
+        }
+
+        public string RemoveHold(string orderId)
+        {
+            string response = null;
+            var result = new RemoveOrderHoldRequest(orderId).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+            }
+            return response;
+        }
+
+        public List<Submission> Submissions(string orderId)
+        {
+            var result = new GetSubmissionsRequest(orderId).Execute(Api.Client);
+            var fetchedSubmissions = result.Data.Submissions;
+            List<Submission> submissions = new List<Submission>();
+
+            if (result.Status == 200)
+            {
+                for (int i = 0; i < fetchedSubmissions.Count; i++)
+                {
+                    Submission tempSubmission = new Submission();
+                    tempSubmission.UpdateFromRequest(Utils.DictionaryOfJsonFields(fetchedSubmissions[i]));
+                    submissions.Add(tempSubmission);
+                }
+            }
+            return submissions;
         }
     }
 }

@@ -47,10 +47,17 @@ namespace Reggora.Api.Requests.Lender.Loans
         public class Response
         {
             [JsonProperty("data")]
-            public List<GetLoanRequest.Response.Loan> Data { get; set; }
+            //public List<GetLoanRequest.Response.Loan> Data { get; set; }
+            public NestedLoans Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
+            public class NestedLoans
+            {
+                [JsonProperty("loans")]
+                public List<GetLoanRequest.Response.Loan> Loans { get; set; }
+            }
         }
     }
 }

@@ -8,29 +8,25 @@ namespace Reggora.Api.Requests.Lender.Orders
 {
     public class CreateOrderRequest : ReggoraRequest
     {
-        public CreateOrderRequest(Order order) : base("lender/order/create", Method.POST)
+        public CreateOrderRequest(Order order) : base("lender/order", Method.POST)
         {
-            AddParameter("order_id", order.Id, ParameterType.UrlSegment);
 
             AddJsonBody(new Request
             {
                 Allocation = Order.AllocationModeToString(order.Allocation),
-//                Vendors = order.RequestedVendors.ToList(),
-//                Loan = order.Loan.Entity.Id.Value,
+                Loan = order.Loan,
+                Products = order.ProductIds,
                 Priority = Order.PriorityTypeToString(order.Priority),
-//                Products = Array.ConvertAll(order.Products, input => input.Id).ToList(),
                 DueDate = Utils.DateToString(order.Due),
-//                AdditionalFees = 
+                AdditionalFees = order.AdditionalFees ?? new List<Request.AdditionalFee>()
             });
+
         }
 
         public class Request
         {
             [JsonProperty("allocation_type")]
             public string Allocation { get; set; }
-
-            [JsonProperty("vendors")]
-            public List<string> Vendors { get; set; }
 
             [JsonProperty("loan")]
             public string Loan { get; set; }
@@ -41,11 +37,11 @@ namespace Reggora.Api.Requests.Lender.Orders
             [JsonProperty("products")]
             public List<string> Products { get; set; }
 
-            [JsonProperty("due_Date")]
+            [JsonProperty("due_date")]
             public string DueDate { get; set; }
 
             [JsonProperty("additional_fees")]
-            public List<string> AdditionalFees { get; set; }
+            public List<AdditionalFee> AdditionalFees { get; set; }
 
             public class AdditionalFee
             {

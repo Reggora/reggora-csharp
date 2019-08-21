@@ -40,6 +40,7 @@ namespace Reggora.Api.Storage
 
         public abstract void Save(T entity);
 
+
         public void Clear(string id)
         {
             Known.Remove(id);

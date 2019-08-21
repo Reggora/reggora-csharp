@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Users
 {
-    public class DeleteUserRequest : RestRequest
+    public class DeleteUserRequest : ReggoraRequest
     {
         public DeleteUserRequest(string userId) : base("lender/users/{user_id}", Method.DELETE)
         {

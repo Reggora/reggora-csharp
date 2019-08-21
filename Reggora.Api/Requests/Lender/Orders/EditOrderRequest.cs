@@ -35,7 +35,7 @@ namespace Reggora.Api.Requests.Lender.Orders
             public string Priority { get; set; }
 
             [JsonProperty("products")]
-            public List<string> Products { get; set; }
+            public List<Product> Products { get; set; }
 
             [JsonProperty("due_date")]
             public string DueDate { get; set; }

@@ -5,7 +5,7 @@ using User = Reggora.Api.Requests.Lender.Users.GetUserRequest.Response;
 
 namespace Reggora.Api.Requests.Lender.Users
 {
-    public class GetUsersRequest : RestRequest
+    public class GetUsersRequest : ReggoraRequest
     {
         public enum Ordering
         {
@@ -18,9 +18,9 @@ namespace Reggora.Api.Requests.Lender.Users
 
         public GetUsersRequest() : base("lender/users", Method.GET)
         {
-            AddParameter("offset", Offset, ParameterType.RequestBody);
-            AddParameter("limit", Limit, ParameterType.RequestBody);
-            AddParameter("order", OrderingToString(), ParameterType.RequestBody);
+            AddParameter("offset", Offset, ParameterType.QueryString);
+            AddParameter("limit", Limit, ParameterType.QueryString);
+            AddParameter("order", OrderingToString(), ParameterType.QueryString);
         }
 
         private string OrderingToString()
@@ -34,13 +34,19 @@ namespace Reggora.Api.Requests.Lender.Users
             return "";
         }
 
+        public new Response Execute(IRestClient client)
+        {
+            return Execute<Response>(client);
+        }
+
         public class Response
         {
             [JsonProperty("data")]
-            public List<User> Data { get; set; }
+            public List<GetUserRequest.Response.User> Data { get; set; }
 
             [JsonProperty("status")]
             public int Status { get; set; }
+
         }
     }
 }

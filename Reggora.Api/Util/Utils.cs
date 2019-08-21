@@ -48,7 +48,7 @@ namespace Reggora.Api.Util
                 return "";
             }
 
-            return ((DateTime) (object) date).ToString("yyyy-MM-dd");
+            return ((DateTime) (object) date).ToString("yyyy-MM-ddTHH:mm:ssZ");
         }
 
         public static int? IntFromString(string integer)
