@@ -16,7 +16,7 @@ namespace Reggora.Api.Requests
         protected T Execute<T>(IRestClient client) where T : new()
         {
             var response = client.Execute<T>(this);
-
+            var fullUrl = client.BuildUri(this);
             if (response.ErrorException != null)
             {
                 throw Reggora.RaiseRequestErrorToException(response.StatusCode, response.ErrorException);

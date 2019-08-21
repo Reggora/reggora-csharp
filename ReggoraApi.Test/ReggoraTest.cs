@@ -550,6 +550,75 @@ namespace ReggoraLenderApi.Test
 
         }
 
+        // Schedule and Payment App Requests
+
+        [TestMethod]
+        public void A_SendPaymentApp()
+        {
+            CreateUser();
+            CreateOrder();
+
+            PaymentApp app = new PaymentApp()
+            {
+                ConsumerEmail = SampleObjects._user.Email,
+                OrderId = SampleObjects._order.Id,
+                UsrType = PaymentApp.UserType.Manual,
+                PaymenType = PaymentApp.PaymentType.Manual,
+                Amount = 100.00f,
+                FirstName = "Fake",
+                LastName = "Person" + RandomString(3, true),
+                Paid = false
+            };
+
+            try
+            {
+                string response = lender.Apps.SendPaymentApp(app);
+                Assert.IsNotNull(response, String.Format("Expected Success message of Sending Payment , Actual: {0}", response));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void B_SendSchedulingApp()
+        {
+            CreateUser();
+            CreateOrder();
+            string orderId = SampleObjects._order.Id;
+            List<string> consumerEmails = new List<string> { };
+            consumerEmails.Add(SampleObjects._user.Id);
+
+            try
+            {
+                string response = lender.Apps.SendSchedulingApp(consumerEmails, orderId);
+                Assert.IsNotNull(response, String.Format("Expected Success message of Sending Scheduling App, Actual: {0}", response));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void C_ConsumerAppLink()
+        {
+            CreateUser();
+            CreateOrder();
+            string orderId = SampleObjects._order.Id;
+            string consumerId = SampleObjects._user.Id;
+            PaymentApp.LinkType linkType = PaymentApp.LinkType.Payment;
+            try
+            {
+                string response = lender.Apps.ConsumerAppLink(orderId, consumerId, linkType);
+                Assert.IsNotNull(response, String.Format("Expected Success message of Getting Consumer Application Link, Actual: {0}", response));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
     }
 
     public class SampleObjects

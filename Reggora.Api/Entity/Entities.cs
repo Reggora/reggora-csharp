@@ -250,6 +250,7 @@ namespace Reggora.Api.Entity
             throw new InvalidCastException($"Cannot cast string '{value}' to '{typeof(Inspection)}'!");
         }
     }
+
     public class User : Entity
     {
         public string Id { get => _id.Value; set => _id.Value = value; }
@@ -317,6 +318,104 @@ namespace Reggora.Api.Entity
             BuildField(ref _lastName, "lastname");
             BuildField(ref _name, "name");
             BuildField(ref _acceptingJobs, "accepting_jobs");
+        }
+    }
+
+    public class PaymentApp : Entity
+    {
+
+        public enum PaymentType
+        {
+            Manual,
+            Stripe,
+        }
+
+
+        public enum UserType
+        {
+            Manual,
+            Consumer,
+        }
+
+        public enum LinkType
+        {
+            Payment,
+            Scheduling,
+            Both
+        }
+
+        public string ConsumerEmail { get => _consumerEmail.Value; set => _consumerEmail.Value = value; }
+        public string OrderId { get => _orderId.Value; set => _orderId.Value = value; }
+        public UserType UsrType { get => _userType.Value; set => _userType.Value = value; }
+        public PaymentType PaymenType { get => _paymenType.Value; set => _paymenType.Value = value; }
+        public float Amount { get => _amount.Value; set => _amount.Value = value; }
+        public string FirstName { get => _firstName.Value; set => _firstName.Value = value; }
+        public string LastName { get => _lastName.Value; set => _lastName.Value = value; }
+        public bool Paid { get => _paid.Value; set => _paid.Value = value; }
+
+        private readonly EntityField<string> _consumerEmail;
+        private readonly EntityField<string> _orderId;
+        private readonly EntityField<UserType> _userType;
+        private readonly EntityField<PaymentType> _paymenType;
+        private readonly EntityField<float> _amount;
+        private readonly EntityField<string> _firstName;
+        private readonly EntityField<string> _lastName;
+        private readonly EntityField<bool> _paid;
+
+        public PaymentApp()
+        {
+
+            BuildField(ref _consumerEmail, "consumer_email");
+            BuildField(ref _orderId, "order_id");
+            BuildField(ref _userType, "user_type");
+            BuildField(ref _paymenType, "payment_type");
+            BuildField(ref _amount, "amount");
+            BuildField(ref _firstName, "firstname");
+            BuildField(ref _lastName, "lastname");
+            BuildField(ref _paid, "paid");
+        }
+
+        public static string PaymentTypeToString(PaymentType? value)
+        {
+            switch (value)
+            {
+                case PaymentType.Manual:
+                    return "manual";
+                case PaymentType.Stripe:
+                    return "stripe";
+            }
+
+            throw new InvalidCastException($"Cannot cast '{typeof(PaymentType)}' to string!");
+        }
+
+
+        public static string UserTypeToString(UserType? value)
+        {
+            switch (value)
+            {
+                case UserType.Manual:
+                    return "manual";
+                case UserType.Consumer:
+                    return "consumer";
+            }
+
+            throw new InvalidCastException($"Cannot cast '{typeof(UserType)}' to string!");
+        }
+
+
+        public static string LinkTypeToString(LinkType? value)
+        {
+            switch (value)
+            {
+                case LinkType.Payment:
+                    return "payment";
+                case LinkType.Scheduling:
+                    return "scheduling";
+                case LinkType.Both:
+                    return "payment,scheduling";
+            }
+
+            throw new InvalidCastException($"Cannot cast '{typeof(LinkType)}' to string!");
         }
     }
 }
