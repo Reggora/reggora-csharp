@@ -15,11 +15,13 @@ namespace Reggora.Api.Requests.Lender.Orders
         public uint Limit = 0;
         public Ordering Order = Ordering.Created;
 
-        public GetOrdersRequest() : base("lender/orders", Method.GET)
+        public GetOrdersRequest(string offset, string limit, string ordering, string loanOfficer, string filters) : base("lender/orders", Method.GET)
         {
-            AddParameter("offset", Offset, ParameterType.QueryString);
-            AddParameter("limit", Limit, ParameterType.QueryString);
-            AddParameter("order", OrderingToString(), ParameterType.QueryString);
+            AddParameter("offset", offset, ParameterType.QueryString);
+            AddParameter("limit", limit, ParameterType.QueryString);
+            AddParameter("order", ordering, ParameterType.QueryString);
+            AddParameter("loan_officer", loanOfficer, ParameterType.QueryString);
+            AddParameter("filter", filters, ParameterType.QueryString);
         }
 
         public new Response Execute(IRestClient client)
