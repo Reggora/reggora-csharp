@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+    using Newtonsoft.Json;
 using Reggora.Api.Entity;
 using Reggora.Api.Util;
 using RestSharp;

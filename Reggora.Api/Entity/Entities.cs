@@ -2,6 +2,7 @@
 // WARNING: T4 GENERATED CODE - DO NOT EDIT
 //
 
+using Reggora.Api.Requests.Lender.Evaults;
 using Reggora.Api.Requests.Lender.Orders;
 using System;
 using System.Collections.Generic;
@@ -416,6 +417,21 @@ namespace Reggora.Api.Entity
             }
 
             throw new InvalidCastException($"Cannot cast '{typeof(LinkType)}' to string!");
+        }
+    }
+
+    public class Evault : Entity
+    {
+        public string Id { get => _id.Value; set => _id.Value = value; }
+        public List<GetEvaultRequest.Response.Evlt.Document> Documents { get => _documents.Value; set => _documents.Value = value; }
+
+        private readonly EntityField<string> _id;
+        private readonly EntityField<List<GetEvaultRequest.Response.Evlt.Document>> _documents;
+
+        public Evault()
+        {
+            BuildField(ref _id, "id");
+            BuildField(ref _documents, "documents");
         }
     }
 }

@@ -67,7 +67,7 @@ namespace Reggora.Api.Storage.Lender
 
         public string Edit(Product product)
         {
-            string response = "";
+            string response = null;
             var result = new EditProductRequest(product).Execute(Api.Client);
             if (result.Status == 200)
             {

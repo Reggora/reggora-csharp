@@ -11,9 +11,9 @@ namespace Reggora.Api.Storage.Lender
         {
         }
 
-        public List<Loan> All()
+        public List<Loan> All(uint Offset = 0, uint Limit = 0, string Ordering = "-created", string LoanOfficer = null)
         {
-            var result = new GetLoansRequest().Execute(Api.Client);
+            var result = new GetLoansRequest(Offset, Limit, Ordering, LoanOfficer).Execute(Api.Client);
             var fetchedLoans = result.Data.Loans;
             List<Loan> loans = new List<Loan>();
 

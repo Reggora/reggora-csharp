@@ -23,6 +23,13 @@ namespace Reggora.Api.Requests.Lender.Orders
             var request = new Request {Refresh = refresh};
             Utils.DictionaryToJsonFields(request, order.GetDirtyFieldsForRequest());
 
+            List<string> productIds = new List<string>();
+            foreach(GetOrderRequest.Response.Order.Product product in order.Products)
+            {
+                productIds.Add(product.Id);
+            }
+            request.Products = productIds;
+
             AddJsonBody(request);
         }
 
@@ -35,7 +42,7 @@ namespace Reggora.Api.Requests.Lender.Orders
             public string Priority { get; set; }
 
             [JsonProperty("products")]
-            public List<Product> Products { get; set; }
+            public List<string> Products { get; set; }
 
             [JsonProperty("due_date")]
             public string DueDate { get; set; }

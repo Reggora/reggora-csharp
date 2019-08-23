@@ -50,9 +50,13 @@ namespace ReggoraLenderApi.Test
         }
 
         // Test Loan Requests
-        public string CreateLoan()
+        public string CreateLoan(bool refresh = false)
         {
-            if (SampleObjects._loan != null) { return SampleObjects._loan.Id; }
+            if (!refresh && SampleObjects._loan != null)
+            {
+                SampleObjects._loan = lender.Loans.Get(SampleObjects._loan.Id);
+                return SampleObjects._loan.Id;
+            }
             Loan loan = new Loan()
             {
                 Number = RandomString(7, false),
@@ -80,7 +84,7 @@ namespace ReggoraLenderApi.Test
         }
         
         [TestMethod]
-        public void A_TestCreateLoan()
+        public void AA_TestCreateLoan()
         {
             Console.WriteLine("Testing Loan Requests...");
             string createdLoanId = CreateLoan();
@@ -90,14 +94,14 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetLoans()
+        public void AB_TestGetLoans()
         {
             var loans = lender.Loans.All();
             Assert.IsInstanceOfType(loans, typeof(List<Loan>));
         }
 
         [TestMethod]
-        public void C_TestGetLoan()
+        public void AC_TestGetLoan()
         {
             string expectedId = CreateLoan() ?? "5d56720d6dcf6d000d6e902c";
             Loan loan = lender.Loans.Get(expectedId);
@@ -106,7 +110,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void D_TestEditLoan()
+        public void AD_TestEditLoan()
         {
             CreateLoan();
             Loan testLoan = SampleObjects._loan;
@@ -130,7 +134,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void E_TestDeleteLoan()
+        public void AE_TestDeleteLoan()
         {
             string deleteId = CreateLoan() ?? "5d56720d6dcf6d000d6e902c";
             string response = lender.Loans.Delete(deleteId);
@@ -140,18 +144,22 @@ namespace ReggoraLenderApi.Test
         }
 
         // Test Order Requests
-        public string CreateOrder()
+        public string CreateOrder(bool refresh = false)
         {
-            CreateLoan();
-            CreateProduct();
-            if (SampleObjects._order != null) { return SampleObjects._order.Id; }
+            string loanId = CreateLoan(true);
+            string productId = CreateProduct(true);
+            if (!refresh && SampleObjects._order != null)
+            {
+                SampleObjects._order = lender.Orders.Get(SampleObjects._order.Id);
+                return SampleObjects._order.Id;
+            }
             
             List<string> products = new List<string>();
-            products.Add(SampleObjects._product.Id);
+            products.Add(productId);
             Order order = new Order()
             {
                 Allocation = Order.AllocationMode.Automatic,
-                Loan = SampleObjects._loan.Id,
+                Loan = loanId,
                 Priority = Order.PriorityType.Normal,
                 ProductIds = products,
                 Due = DateTime.Now.AddYears(1)
@@ -169,7 +177,7 @@ namespace ReggoraLenderApi.Test
             }
         }
         [TestMethod]
-        public void A_TestCreateOrder()
+        public void BA_TestCreateOrder()
         {
             Console.WriteLine("Testing Order Requests...");
             string createdOrderId = CreateOrder();
@@ -178,14 +186,14 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetOrders()
+        public void BB_TestGetOrders()
         {
             var orders = lender.Orders.All();
             Assert.IsInstanceOfType(orders, typeof(List<Order>));
         }
 
         [TestMethod]
-        public void C_TestGetOrder()
+        public void BC_TestGetOrder()
         {
             Console.WriteLine("Testing Get a Loan...");
             string expectedId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
@@ -195,21 +203,18 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void D_TestEditOrder()
+        public void BD_TestEditOrder()
         {
             CreateOrder();
             Order testOrder = SampleObjects._order;
 
-            DateTime newDueDate = DateTime.Now.AddYears(1);
-
-            testOrder.Due = newDueDate;
+            testOrder.Priority = Order.PriorityType.Rush;
             try
             {
                 string updatedOrderId = lender.Orders.Edit(testOrder);
                 testOrder = lender.Orders.Get(updatedOrderId);
                 SampleObjects._order = testOrder;
-                Assert.AreEqual(testOrder.Due, newDueDate, String.Format("Expected Loan Number:'{0}'; Loan Number: {1}",
-                                     newDueDate.ToString(), testOrder.Due.ToString()));
+                Assert.AreEqual(testOrder.Priority, Order.PriorityType.Rush);
 
             }
             catch (Exception e)
@@ -219,7 +224,34 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void E_TestCancelOrder()
+        public void BE_TestPlaceOrderOnHold()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string reason = "I'd like to wait to start this order.";
+            string response = lender.Orders.OnHold(orderId, reason);
+            Assert.IsNotNull(response, String.Format("Expected Success message of Placing Order On Hold, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void BF_RemoveOrderHold()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string response = lender.Orders.RemoveHold(orderId);
+            Assert.IsNotNull(response, String.Format("Expected Success message of Removing Order Hold, Actual: {0}", response));
+
+        }
+
+        [TestMethod]
+        public void BG_TestGetSubmissions()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            var submissions = lender.Orders.Submissions(orderId);
+            Assert.IsInstanceOfType(submissions, typeof(List<Submission>));
+        }
+
+        [TestMethod]
+        public void BH_TestCancelOrder()
         {
             string cancelId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
             string response = lender.Orders.Cancel(cancelId);
@@ -228,39 +260,14 @@ namespace ReggoraLenderApi.Test
 
         }
 
-        [TestMethod]
-        public void F_TestPlacelOrderOnHold()
-        {
-            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
-            string reason = "I'd like to wait to start this order.";
-            string response = lender.Orders.OnHold(orderId, reason);
-            SampleObjects._order = null;
-            Assert.IsNotNull(response, String.Format("Expected Success message of Placing Order On Hold, Actual: {0}", response));
-
-        }
-
-        [TestMethod]
-        public void G_RemoveOrderHold()
-        {
-            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
-            string response = lender.Orders.RemoveHold(orderId);
-            SampleObjects._order = null;
-            Assert.IsNotNull(response, String.Format("Expected Success message of Removing Order Hold, Actual: {0}", response));
-
-        }
-
-        [TestMethod]
-        public void H_TestGetSubmissions()
-        {
-            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
-            var submissions = lender.Orders.Submissions(orderId);
-            Assert.IsInstanceOfType(submissions, typeof(List<Submission>));
-        }
-
         //Test Product Requests
-        public string CreateProduct()
+        public string CreateProduct(bool refresh = false)
         {
-            if (SampleObjects._product != null) { return SampleObjects._product.Id; }
+            if (!refresh && SampleObjects._product != null)
+            {
+                SampleObjects._product = lender.Products.Get(SampleObjects._product.Id);
+                return SampleObjects._product.Id;
+            }
             Product product = new Product()
             {
                 ProductName = "Full Appraisal" + RandomString(3, true),
@@ -281,7 +288,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void A_TestCreateProduct()
+        public void CA_TestCreateProduct()
         {
             Console.WriteLine("Testing Product Requests...");
             string createdProductId = CreateProduct();
@@ -290,14 +297,14 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetProducts()
+        public void CB_TestGetProducts()
         {
             var products = lender.Products.All();
             Assert.IsInstanceOfType(products, typeof(List<Product>));
         }
 
         [TestMethod]
-        public void C_TestGetProduct()
+        public void CC_TestGetProduct()
         {
             string expectedId = CreateProduct() ?? "5d4bd10434e305000c322368";
             Product product = lender.Products.Get(expectedId);
@@ -306,7 +313,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void D_TestEditProduct()
+        public void CD_TestEditProduct()
         {
             CreateProduct();
             Product testProduct = SampleObjects._product;
@@ -321,7 +328,7 @@ namespace ReggoraLenderApi.Test
                 SampleObjects._product = testProduct;
                 Assert.AreEqual(testProduct.ProductName, newProductName, String.Format("Expected Product Name:'{0}'; Actual Product Name: {1}",
                                      newProductName, testProduct.ProductName));
-                
+
             }
             catch (Exception e)
             {
@@ -330,7 +337,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void E_TestDeleteProduct()
+        public void CE_TestDeleteProduct()
         {
             string deleteId = CreateProduct() ?? "5d4bd10434e305000c322368";
             string response = lender.Products.Delete(deleteId);
@@ -342,7 +349,11 @@ namespace ReggoraLenderApi.Test
         // Test User Requests
         public string CreateUser()
         {
-            if (SampleObjects._user != null) { return SampleObjects._user.Id; }
+            if (SampleObjects._user != null)
+            {
+                SampleObjects._user = lender.Users.Get(SampleObjects._user.Id);
+                return SampleObjects._user.Id;
+            }
             User user = new User()
             {
                 Email = RandomString(4, true) + "@test.com",
@@ -366,7 +377,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void A_TestCreateUser()
+        public void DA_TestCreateUser()
         {
             Console.WriteLine("Testing User Requests...");
             string createdLoanId = CreateUser();
@@ -376,14 +387,14 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetUsers()
+        public void DB_TestGetUsers()
         {
             var users = lender.Users.All();
             Assert.IsInstanceOfType(users, typeof(List<User>));
         }
 
         [TestMethod]
-        public void C_TestGetUser()
+        public void DC_TestGetUser()
         {
             string expectedId = CreateUser() ?? "5d5aa161cf56d4000de82465";
             User user = lender.Users.Get(expectedId);
@@ -392,7 +403,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void D_TestEditUser()
+        public void DD_TestEditUser()
         {
             CreateUser();
             User testUser = SampleObjects._user;
@@ -417,7 +428,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void E_TestDeleteUser()
+        public void DE_TestDeleteUser()
         {
             string deleteId = CreateUser() ?? "5d5aa161cf56d4000de82465";
             string response = lender.Users.Delete(deleteId);
@@ -427,7 +438,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void A_TestInviteUser()
+        public void DF_TestInviteUser()
         {
             User user = new User()
             {
@@ -475,7 +486,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void A_TestCreateVendor()
+        public void EA_TestCreateVendor()
         {
             Console.WriteLine("Testing Vendor Requests...");
             string createdVendorId = CreateVendor();
@@ -484,14 +495,14 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetVendors()
+        public void EB_TestGetVendors()
         {
             var vendors = lender.Vendors.All();
             Assert.IsInstanceOfType(vendors, typeof(List<Vendr>));
         }
 
         [TestMethod]
-        public void C_TestGetVendor()
+        public void EC_TestGetVendor()
         {
             string expectedId = CreateVendor() ?? "5d5b714c586cbb000d3eecb5";
             Vendr vendor = lender.Vendors.Get(expectedId);
@@ -500,7 +511,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetVendorsByZones()
+        public void EB_TestGetVendorsByZones()
         {
             List<string> zones = new List<string> {};
             var vendors = lender.Vendors.GetByZone(zones);
@@ -508,7 +519,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_TestGetVendorsByBranch()
+        public void EC_TestGetVendorsByBranch()
         {
             string branchId = "5b58c8861e5f59000d4542af";
             var vendors = lender.Vendors.GetByBranch(branchId);
@@ -516,7 +527,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void D_TestEditVendor()
+        public void ED_TestEditVendor()
         {
             CreateVendor();
             Vendr testVendor = SampleObjects._vendor;
@@ -541,7 +552,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void E_TestDeleteVendor()
+        public void EE_TestDeleteVendor()
         {
             string deleteId = CreateVendor() ?? "5d5b714c586cbb000d3eecb5";
             string response = lender.Vendors.Delete(deleteId);
@@ -553,7 +564,7 @@ namespace ReggoraLenderApi.Test
         // Schedule and Payment App Requests
 
         [TestMethod]
-        public void A_SendPaymentApp()
+        public void FA_TestSendPaymentApp()
         {
             CreateUser();
             CreateOrder();
@@ -582,7 +593,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void B_SendSchedulingApp()
+        public void FB_TestSendSchedulingApp()
         {
             CreateUser();
             CreateOrder();
@@ -602,7 +613,7 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void C_ConsumerAppLink()
+        public void FC_TestConsumerAppLink()
         {
             CreateUser();
             CreateOrder();
@@ -619,6 +630,103 @@ namespace ReggoraLenderApi.Test
                 throw new Exception(e.ToString());
             }
         }
+
+        // Evault Request
+        public string InitEvault(bool refresh = false)
+        {
+            if (!refresh && SampleObjects._evault != null) { return SampleObjects._evault.Id; }
+            
+            try
+            {
+                string staticEvaultId = "5d4d06d6d28c2600109499c5";
+                SampleObjects._evault = lender.Evaults.Get(staticEvaultId);
+                return SampleObjects._evault.Id;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+        }
+
+        public string UploadDocument()
+        {
+            string evaultId = InitEvault();
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string sampleFile = Path.Combine(path, "..\\..\\..\\sample.pdf");
+            
+            try
+            {
+                string documentId = lender.Evaults.UploadDocument(evaultId, sampleFile);
+
+                InitEvault(true);
+                return documentId;
+            } catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+            
+        }
+
+
+        [TestMethod]
+        public void GA_TestGetEvault()
+        {
+            InitEvault();
+            Assert.IsNotNull(SampleObjects._evault, String.Format("Expected Id of Evault, Actual: {0}", SampleObjects._evault.Id));
+        }
+
+        //[TestMethod]
+        //public void GB_TestGetDocument()
+        //{
+        //    try
+        //    {
+        //        string documentId = UploadDocument();
+        //        string evaultId = SampleObjects._evault.Id;
+        //        lender.Evaults.GetDocument(evaultId, documentId);
+        //    } catch (Exception e)
+        //    {
+        //        throw new Exception(e.ToString());
+        //    }
+            
+        //}
+
+        [TestMethod]
+        public void GC_TestUploadDocument()
+        {
+            string documentId = UploadDocument();
+
+            Assert.IsNotNull(documentId, String.Format("Expected Success message of Uploading document, Actual: {0}", documentId));
+        }
+
+        [TestMethod]
+        public void GD_TestUploadPS()
+        {
+            string orderId = CreateOrder();
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string sampleFile = Path.Combine(path, "..\\..\\..\\sample.pdf");
+            try
+            {
+                string response = lender.Evaults.UploadPS(orderId, sampleFile);
+                Assert.IsNotNull(response, String.Format("Expected Success message of Uploading document, Actual: {0}", response));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
+
+        }
+
+        [TestMethod]
+        public void GE_TestDeleteDocument()
+        {
+            string deleteId = UploadDocument();
+            string evaultId = SampleObjects._evault.Id;
+            string response = lender.Evaults.DeleteDocument(evaultId, deleteId);
+            InitEvault(true);
+            Assert.IsNotNull(response, String.Format("Expected Success message of Deletion, Actual: {0}", response));
+
+        }
     }
 
     public class SampleObjects
@@ -628,6 +736,7 @@ namespace ReggoraLenderApi.Test
         public static Product _product { get; set; }
         public static User _user { get; set; }
         public static Vendr _vendor { get; set; }
+        public static Evault _evault { get; set; }
 
     }
 
@@ -643,7 +752,7 @@ namespace ReggoraLenderApi.Test
                 string username = Environment.UserName;
 
                 string fileContents = string.Empty;
-                string path = System.AppDomain.CurrentDomain.BaseDirectory;
+                string path = AppDomain.CurrentDomain.BaseDirectory;
                 if (path != null)
                 {
                     var configFilePath = Path.Combine(path, $"example.{username}.conf");
