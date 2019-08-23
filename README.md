@@ -106,6 +106,9 @@
         - Create an Order
             [View detail](https://sandbox.reggora.io/#create-an-order)
             ```
+                ** AllocationMode: Automatic, Manual **
+                ** PriorityType: Normal, Rush **
+          
                 Order order = new Order()
                             {
                                 Allocation = Order.AllocationMode.Automatic,
@@ -167,5 +170,11 @@
                 string documentFilePath = "F:\document.pdf";
                 
                 lender.Evaults.UploadDocument(evaultId, documentFilePath);
+            ```  
+          
+        - Delete Document
+            [View detail](https://sandbox.reggora.io/#delete-document)
+            ```
+                lender.Evaults.DeleteDocument(evaultId, documentId);
             ```  
                 
