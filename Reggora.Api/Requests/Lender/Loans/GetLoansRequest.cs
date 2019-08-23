@@ -16,15 +16,15 @@ namespace Reggora.Api.Requests.Lender.Loans
         public Ordering Order = Ordering.Created;
         public string LoanOfficer = null;
 
-        public GetLoansRequest(uint Offset, uint Limit, string Ordering, string LoanOfficer) : base("lender/loans", Method.GET)
+        public GetLoansRequest(uint offset, uint limit, string ordering, string loanOfficer) : base("lender/loans", Method.GET)
         {
-            AddParameter("offset", Offset, ParameterType.QueryString);
-            AddParameter("limit", Limit, ParameterType.QueryString);
-            AddParameter("order", Ordering, ParameterType.QueryString);
+            AddParameter("offset", offset, ParameterType.QueryString);
+            AddParameter("limit", limit, ParameterType.QueryString);
+            AddParameter("order", ordering, ParameterType.QueryString);
 
             if (LoanOfficer != null)
             {
-                AddParameter("loan_officer", LoanOfficer, ParameterType.QueryString);
+                AddParameter("loan_officer", loanOfficer, ParameterType.QueryString);
             }
         }
 

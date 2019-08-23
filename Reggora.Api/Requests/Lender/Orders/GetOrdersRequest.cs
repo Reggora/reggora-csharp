@@ -15,7 +15,7 @@ namespace Reggora.Api.Requests.Lender.Orders
         public uint Limit = 0;
         public Ordering Order = Ordering.Created;
 
-        public GetOrdersRequest(string offset, string limit, string ordering, string loanOfficer, string filters) : base("lender/orders", Method.GET)
+        public GetOrdersRequest(uint offset, uint limit, string ordering, string loanOfficer, string filters) : base("lender/orders", Method.GET)
         {
             AddParameter("offset", offset, ParameterType.QueryString);
             AddParameter("limit", limit, ParameterType.QueryString);
