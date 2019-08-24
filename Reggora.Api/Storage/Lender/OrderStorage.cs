@@ -1,6 +1,7 @@
 using Reggora.Api.Entity;
 using Reggora.Api.Requests.Lender.Orders;
 using Reggora.Api.Util;
+using Syroot.Windows.IO;
 using System.Collections.Generic;
 
 namespace Reggora.Api.Storage.Lender
@@ -137,6 +138,16 @@ namespace Reggora.Api.Storage.Lender
                 }
             }
             return submissions;
+        }
+
+        public void DownloadSubmissionDoc(string orderId, uint version, string reportType, string downloadPath)
+        {
+            if(downloadPath == "" || downloadPath == null)
+            {
+                downloadPath = new KnownFolder(KnownFolderType.Downloads).Path;
+            }
+
+            var result = new GetSubmissionRequest(orderId, version, reportType).Execute(Api.Client);
         }
     }
 }

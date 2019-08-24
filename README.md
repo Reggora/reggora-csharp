@@ -11,6 +11,7 @@
   - Newtonsoft.Json v12.0.2
   - RestSharp v106.6.10
   - RestSharp.Newtonsoft.Json v1.5.1
+  - Syroot.Windows.IO.KnownFolders v1.2.1
 - Microsoft.NETCore.App (2.2.0)
 
 ## Building and importing Library 
@@ -177,4 +178,64 @@
             ```
                 lender.Evaults.DeleteDocument(evaultId, documentId);
             ```  
-                
+         
+	- Products
+			
+		- Get All Products
+			[View detail](https://sandbox.reggora.io/#get-all-products)
+			```
+				var products = lender.Products.All();
+			```
+
+		- Get a Product
+			[View detail](https://sandbox.reggora.io/#get-product)
+			```
+				Product product = lender.Products.Get(productId);
+			```
+
+		- Delete Product
+			[View detail](https://sandbox.reggora.io/#delete-product)
+			```
+				lender.Products.Delete(productId);
+			```
+
+		- Create a Product
+			[View detail](https://sandbox.reggora.io/#create-a-product)
+			```
+				Product product = new Product()
+								{
+									ProductName = "Full Appraisal" + RandomString(3, true),
+									Amount = 100.00f,
+									InspectionType = Product.Inspection.Interior,
+									RequestForms = "1004MC, BPO"
+								};
+
+				lender.Products.Create(product);
+			
+		- Edit a Product
+			[View detail](https://sandbox.reggora.io/#edit-a-product)
+			```
+				product.ProductName = newProductName;
+				lender.Products.Edit(product);
+			```
+
+	- Submissions
+		
+		- Get All Submissions
+			[View detail](https://sandbox.reggora.io/#get-all-submissions)
+			```
+				string orderId = "5d5bc544586cbb000f5e171f";
+				var submissions = lender.Orders.Submissions(orderId);
+			```
+
+		- Download Submission Document
+			[View detail](https://sandbox.reggora.io/#download-submission-document)
+			```
+				** reportType: "pdf_report", "xml_report", "invoice"
+				string orderId = "5d5bc544586cbb000f5e171f";
+				uint version = 1;
+				string reportType = "pdf_report";
+
+				string downloadPath = null; // If downloadPath is `null`, document will be download `Downloads` path by default
+
+				lender.Orders.DownloadSubmissionDoc(orderId, version, reportType, downloadPath);

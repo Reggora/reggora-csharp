@@ -251,7 +251,17 @@ namespace ReggoraLenderApi.Test
         }
 
         [TestMethod]
-        public void BH_TestCancelOrder()
+        public void BH_TestDownloadSubmissionDoc()
+        {
+            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            uint version = 1;
+            string reportType = "pdf_report";
+            string downloadPath = null;
+            lender.Orders.DownloadSubmissionDoc(orderId, version, reportType, downloadPath);
+        }
+
+        [TestMethod]
+        public void BI_TestCancelOrder()
         {
             string cancelId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
             string response = lender.Orders.Cancel(cancelId);
