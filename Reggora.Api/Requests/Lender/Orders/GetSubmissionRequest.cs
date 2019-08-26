@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace Reggora.Api.Requests.Lender.Orders
@@ -15,8 +16,14 @@ namespace Reggora.Api.Requests.Lender.Orders
         {
             return Execute<Response>(client);
         }
+        public byte[] Download(IRestClient client)
+        {
+            return client.DownloadData(this, true);
+        }
         public class Response
         {
+            [JsonProperty("error")]
+            public string Error { get; set; }
         }
     }
 }

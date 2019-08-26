@@ -15,11 +15,11 @@ namespace Reggora.Api.Requests.Lender.Vendors
         public uint Limit = 0;
         public Ordering Order = Ordering.Created;
 
-        public GetVendorsByZoneRequest(List<string> zones) : base("lender/vendors/by_zone", Method.POST)
+        public GetVendorsByZoneRequest(List<string> zones, uint offset, uint limit, string ordering) : base("lender/vendors/by_zone", Method.POST)
         {
-            AddParameter("offset", Offset, ParameterType.QueryString);
-            AddParameter("limit", Limit, ParameterType.QueryString);
-            AddParameter("order", OrderingToString(),  ParameterType.QueryString);
+            AddParameter("offset", offset, ParameterType.QueryString);
+            AddParameter("limit", limit, ParameterType.QueryString);
+            AddParameter("order", ordering,  ParameterType.QueryString);
 
             AddJsonBody(new Request
             {

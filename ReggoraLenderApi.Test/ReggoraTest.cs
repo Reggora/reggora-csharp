@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Reggora.Api.Requests.Lender.Products;
 
 namespace ReggoraLenderApi.Test
 {
@@ -195,7 +194,7 @@ namespace ReggoraLenderApi.Test
         [TestMethod]
         public void BC_TestGetOrder()
         {
-            Console.WriteLine("Testing Get a Loan...");
+            Console.WriteLine("Testing Get a Order...");
             string expectedId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
             Order order = lender.Orders.Get(expectedId);
             Assert.AreEqual(expectedId, order.Id, String.Format("Tried to get order by ID:'{0}'; Actual ID of order: {1}",
@@ -253,11 +252,12 @@ namespace ReggoraLenderApi.Test
         [TestMethod]
         public void BH_TestDownloadSubmissionDoc()
         {
-            string orderId = CreateOrder() ?? "5d5bc544586cbb000f5e171f";
+            string orderId = "5d38b049a27621000abd28ed";
             uint version = 1;
             string reportType = "pdf_report";
             string downloadPath = null;
-            lender.Orders.DownloadSubmissionDoc(orderId, version, reportType, downloadPath);
+            bool response = lender.Orders.DownloadSubmissionDoc(orderId, version, reportType, downloadPath);
+            Assert.IsTrue(response);
         }
 
         [TestMethod]

@@ -25,6 +25,7 @@ namespace Reggora.Api.Requests
             return response.Data;
         }
 
+
         public BasicResponse Execute(IRestClient client)
         {
             return Execute<BasicResponse>(client);

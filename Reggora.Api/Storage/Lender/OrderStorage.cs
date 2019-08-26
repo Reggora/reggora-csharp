@@ -1,8 +1,11 @@
 using Reggora.Api.Entity;
+using Reggora.Api.Requests;
 using Reggora.Api.Requests.Lender.Orders;
 using Reggora.Api.Util;
 using Syroot.Windows.IO;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Reggora.Api.Storage.Lender
 {
@@ -140,14 +143,26 @@ namespace Reggora.Api.Storage.Lender
             return submissions;
         }
 
-        public void DownloadSubmissionDoc(string orderId, uint version, string reportType, string downloadPath)
+        public bool DownloadSubmissionDoc(string orderId, uint version, string reportType, string downloadPath)
         {
             if(downloadPath == "" || downloadPath == null)
             {
                 downloadPath = new KnownFolder(KnownFolderType.Downloads).Path;
             }
-
-            var result = new GetSubmissionRequest(orderId, version, reportType).Execute(Api.Client);
+            bool response = true;
+            try
+            {
+                byte[] result = new GetSubmissionRequest(orderId, version, reportType).Download(Api.Client);
+                FileStream fs = File.Create(downloadPath + "\\" + orderId);
+                fs.Write(result, 0, result.Length);
+            }
+            catch (Exception e)
+            {
+                response = false;
+                Console.WriteLine("Downloading Error message: {0}", e.ToString());
+            }
+            
+            return response;
         }
     }
 }

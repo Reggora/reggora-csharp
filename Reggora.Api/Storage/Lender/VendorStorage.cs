@@ -46,9 +46,9 @@ namespace Reggora.Api.Storage.Lender
             return returned;
         }
 
-        public List<Vendr> GetByZone(List<string> zones)
+        public List<Vendr> GetByZone(List<string> zones, uint offset = 0, uint limit = 0, string ordering = "-created")
         {
-            var result = new GetVendorsByZoneRequest(zones).Execute(Api.Client);
+            var result = new GetVendorsByZoneRequest(zones, offset, limit, ordering).Execute(Api.Client);
             var fetchedVendors = result.Data.Vendors;
             List<Vendr> vendors = new List<Vendr>();
 
