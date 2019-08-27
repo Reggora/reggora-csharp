@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reggora.Api", "Reggora.Api\Reggora.Api.csproj", "{084D568D-58D2-4AB9-940E-0AE51909A9ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReggoraLenderApi.Test", "ReggoraApi.Test\ReggoraLenderApi.Test.csproj", "{D1212A55-926F-4AF6-907A-B5091AEAB682}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReggoraLenderApi.Test", "ReggoraLenderApi.Test\ReggoraLenderApi.Test.csproj", "{D1212A55-926F-4AF6-907A-B5091AEAB682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReggoraVendorApi.Test", "ReggoraVendorApi.Test\ReggoraVendorApi.Test.csproj", "{8C3BAAA0-CE21-4BC9-98F7-A1211057F430}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D1212A55-926F-4AF6-907A-B5091AEAB682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1212A55-926F-4AF6-907A-B5091AEAB682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1212A55-926F-4AF6-907A-B5091AEAB682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3BAAA0-CE21-4BC9-98F7-A1211057F430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3BAAA0-CE21-4BC9-98F7-A1211057F430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3BAAA0-CE21-4BC9-98F7-A1211057F430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3BAAA0-CE21-4BC9-98F7-A1211057F430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,9 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MimeMapping" Version="1.0.1.14" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
         <PackageReference Include="RestSharp" Version="106.6.10" />
         <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
+        <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.2.1" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="4.5.2" />
     </ItemGroup>
 
     <ItemGroup>

@@ -10,6 +10,7 @@ namespace Reggora.Api.Requests
             AddJsonBody(new Request
             {
                 Username = username,
+
                 Password = password
             });
         }
