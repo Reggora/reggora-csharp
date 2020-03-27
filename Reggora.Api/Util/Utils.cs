@@ -41,6 +41,11 @@ namespace Reggora.Api.Util
             }
         }
 
+        public static List<string> ListOfJsonString(string listItems)
+        {
+            return JsonConvert.DeserializeObject<List<string>>(listItems);
+        }
+
         public static string DateToString(DateTime? date)
         {
             if (date == null)

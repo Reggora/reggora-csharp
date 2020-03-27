@@ -93,5 +93,57 @@ namespace Reggora.Api.Storage.Lender
             return response;
         }
 
+        /// <summary>
+        /// Get Loan Schema (Extended)
+        /// </summary>
+        /// <returns>Return a list of all Loan fields</returns>
+        public List<string> GetSchema()
+        {
+            List<string> response = new List<string>();
+
+            var result = new GetLoanSchemaRequest().Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = Utils.ListOfJsonString(result.Data);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        ///Create a Loan with custom fields that are setup in the Settings tab within the lender platform. (Extended)
+        /// </summary>
+        /// <param name="loanParams">Loan fields name and value as a dictionary</param>
+        /// <returns>ID of the created Loan</returns>
+        public string Create(Dictionary<string, object> loanParams)
+        {
+            string response = "";
+            var result = new CreateExtendedLoanRequest(loanParams).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Edit a Loan with custom fields that are setup in the Settings tab within the lender platform. (Extended)
+        /// </summary>
+        /// <param name="loanID">Loan ID to be edited</param>
+        /// <param name="loanParams">Loan fields name and value as a dictionary</param>
+        /// <returns>ID of the edited Loan</returns>
+        public string Edit(string loanID, Dictionary<string, object> loanParams)
+        {
+            string response = "";
+            var result = new EditExtendedLoanRequest(loanID, loanParams).Execute(Api.Client);
+            if (result.Status == 200)
+            {
+                response = result.Data;
+            }
+            return response;
+        }
+
+
     }
 }
