@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
+using Reggora.Api.Requests.Lender.Models;
 using RestSharp;
+using System.Collections.Generic;
 
 namespace Reggora.Api.Requests.Lender.Loans
 {
@@ -73,6 +75,9 @@ namespace Reggora.Api.Requests.Lender.Loans
 
                 [JsonProperty("loan_type")]
                 public string LoanType { get; set; }
+                
+                [JsonProperty("consumers")]
+                public List<Consumer> Consumers { get; set; }
 
                 public class Officer
                 {

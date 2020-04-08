@@ -3,6 +3,7 @@
 //
 
 using Reggora.Api.Requests.Lender.Evaults;
+using Reggora.Api.Requests.Lender.Models;
 using Reggora.Api.Requests.Lender.Orders;
 using Reggora.Api.Requests.Vendor.Conversation;
 using Reggora.Api.Requests.Vendor.Order;
@@ -26,6 +27,7 @@ namespace Reggora.Api.Entity
         public string PropertyZip { get => _propertyZip.Value; set => _propertyZip.Value = value; }
         public string CaseNumber { get => _caseNumber.Value; set => _caseNumber.Value = value; }
         public string AppraisalType { get => _appraisalType.Value; set => _appraisalType.Value = value; }
+        public List<Consumer> Consumers { get => _consumers.Value; set => _consumers.Value = value; }
 
         private readonly EntityField<string> _id;
         private readonly EntityField<string> _number;
@@ -39,6 +41,7 @@ namespace Reggora.Api.Entity
         private readonly EntityField<string> _propertyZip;
         private readonly EntityField<string> _caseNumber;
         private readonly EntityField<string> _appraisalType;
+        private readonly EntityField<List<Consumer>> _consumers;
 
         public Loan()
         {
@@ -54,6 +57,7 @@ namespace Reggora.Api.Entity
             BuildField(ref _propertyZip, "subject_property_zip");
             BuildField(ref _caseNumber, "case_number");
             BuildField(ref _appraisalType, "appraisal_type");
+            BuildField(ref _consumers, "consumers");
         }
 
     }
@@ -84,6 +88,7 @@ namespace Reggora.Api.Entity
         public Vendr AcceptedVendor { get => _acceptedVendor.Value; set => _acceptedVendor.Value = value; }
         public string Evault { get => _evault.Value; set => _evault.Value = value; }
         public List<CreateOrderRequest.Request.AdditionalFee> AdditionalFees { get => _additionalFees.Value; set => _additionalFees.Value = value; }
+        public List<Consumer> Consumers { get => _consumers.Value; set => _consumers.Value = value; }
 
         public bool Inspected { get => _inspected.Value; set => _inspected.Value = value; }
 
@@ -102,7 +107,7 @@ namespace Reggora.Api.Entity
         private readonly EntityField<Vendr> _acceptedVendor;
         private readonly EntityField<string> _evault;
         private readonly EntityField<List<CreateOrderRequest.Request.AdditionalFee>> _additionalFees;
-
+        private readonly EntityField<List<Consumer>> _consumers;
         public Order()
         {
             BuildField(ref _id, "id");
@@ -120,6 +125,7 @@ namespace Reggora.Api.Entity
             BuildField(ref _acceptedVendor, "accepted_vendor");
             BuildField(ref _evault, "evault");
             BuildField(ref _additionalFees, "additional_fees");
+            BuildField(ref _consumers, "consumers");
         }
 
         public static string PriorityTypeToString(PriorityType? value)
